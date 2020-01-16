@@ -46,6 +46,11 @@ Frame::Ptr Map::GetFrame(int fid) const {
     }
 }
 
+Frame::Ptr Map::GetLastFrame() const {
+    auto iter = id_frm_map_.end();
+    return (--iter)->second;
+}
+
 int Map::GetFrameCnt() const {
     return id_frm_map_.size();
 }

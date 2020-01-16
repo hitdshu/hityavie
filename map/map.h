@@ -20,6 +20,7 @@ public:
     std::vector<Frame::Ptr> GetAllFrames() const;
     Point::Ptr GetPoint(int pid) const;
     Frame::Ptr GetFrame(int fid) const;
+    Frame::Ptr GetLastFrame() const;
     int GetFrameCnt() const;
     int GetPointCnt() const;
     bool HasPoint(int pid) const;

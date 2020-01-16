@@ -42,4 +42,11 @@ Eigen::Vector3d GeometryUtility::Triangulate(const Eigen::Matrix4d &tc1w, const 
     return result;
 }
 
+Eigen::Vector3d GeometryUtility::Transform(const Eigen::Matrix4d &tcw, const Eigen::Vector3d &pw) {
+    Eigen::Vector4d pwh;
+    pwh << pw[0], pw[1], pw[2], 1;
+    Eigen::Vector4d pch = tcw * pwh;
+    return pch.block(0, 0, 3, 1) / pch[3];
+}
+
 } // namespace hityaview

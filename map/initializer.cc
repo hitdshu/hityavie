@@ -48,7 +48,6 @@ bool Initializer::Initialize(const Frame::Ptr &frm) {
     } else {
         r = r2;
     }
-    std::cout << r.type() << std::endl;
     Eigen::Matrix3d r21;
     Eigen::Vector3d t21;
     r21 << r.at<double>(0, 0), r.at<double>(0, 1), r.at<double>(0, 2), 
@@ -97,6 +96,8 @@ bool Initializer::Initialize(const Frame::Ptr &frm) {
         if (ptsw[idx][2] > 0) {
             Point::Ptr np(new Point(common_feat_id[idx], ptsw[idx]));
             map_->AddPoint(np);
+            np->AddObs(last_frm_);
+            np->AddObs(frm);
             last_frm_->EnableObs(common_feat_id[idx]);
             frm->EnableObs(common_feat_id[idx]);
         }

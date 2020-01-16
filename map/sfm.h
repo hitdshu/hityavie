@@ -29,6 +29,9 @@ public:
     Sfm(const Sfm &) = delete;
     Sfm &operator=(const Sfm &) = delete;
 
+protected:
+    void SolvePnp(const Frame::Ptr &last_frm, const Frame::Ptr &cur_frm);
+
 private:
     Map::Ptr map_;
     BaseCamera::Ptr cam_;

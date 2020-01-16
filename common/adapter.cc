@@ -7,6 +7,17 @@ cv::Point2f Adapter::Vec2Pt(const Eigen::Vector2d &v) {
     return pt;
 }
 
+cv::Point3f Adapter::Vec2Pt(const Eigen::Vector3d &v) {
+    cv::Point3f pt(v[0], v[1], v[2]);
+    return pt;
+}
+
+Eigen::Vector3d Adapter::Pt2Vec(const cv::Point3f &pt) {
+    Eigen::Vector3d v;
+    v << pt.x, pt.y, pt.z;
+    return v;
+}
+
 Eigen::Vector2d Adapter::Pt2Vec(const cv::Point2f &pt) {
     Eigen::Vector2d v;
     v << pt.x, pt.y;
