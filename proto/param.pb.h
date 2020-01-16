@@ -33,9 +33,119 @@ void  protobuf_AddDesc_param_2eproto();
 void protobuf_AssignDesc_param_2eproto();
 void protobuf_ShutdownFile_param_2eproto();
 
+class YavieParameter;
 class ImuNoiseParameter;
+class CameraParam;
+class FisheyeCameraParam;
+class TrackerParam;
+class OpticalflowTrackerParam;
 
 // ===================================================================
+
+class YavieParameter : public ::google::protobuf::Message {
+ public:
+  YavieParameter();
+  virtual ~YavieParameter();
+
+  YavieParameter(const YavieParameter& from);
+
+  inline YavieParameter& operator=(const YavieParameter& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const YavieParameter& default_instance();
+
+  void Swap(YavieParameter* other);
+
+  // implements Message ----------------------------------------------
+
+  YavieParameter* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const YavieParameter& from);
+  void MergeFrom(const YavieParameter& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required .hityavie.CameraParam cam = 1;
+  inline bool has_cam() const;
+  inline void clear_cam();
+  static const int kCamFieldNumber = 1;
+  inline const ::hityavie::CameraParam& cam() const;
+  inline ::hityavie::CameraParam* mutable_cam();
+  inline ::hityavie::CameraParam* release_cam();
+  inline void set_allocated_cam(::hityavie::CameraParam* cam);
+
+  // required .hityavie.ImuNoiseParameter np = 2;
+  inline bool has_np() const;
+  inline void clear_np();
+  static const int kNpFieldNumber = 2;
+  inline const ::hityavie::ImuNoiseParameter& np() const;
+  inline ::hityavie::ImuNoiseParameter* mutable_np();
+  inline ::hityavie::ImuNoiseParameter* release_np();
+  inline void set_allocated_np(::hityavie::ImuNoiseParameter* np);
+
+  // required .hityavie.TrackerParam tp = 3;
+  inline bool has_tp() const;
+  inline void clear_tp();
+  static const int kTpFieldNumber = 3;
+  inline const ::hityavie::TrackerParam& tp() const;
+  inline ::hityavie::TrackerParam* mutable_tp();
+  inline ::hityavie::TrackerParam* release_tp();
+  inline void set_allocated_tp(::hityavie::TrackerParam* tp);
+
+  // @@protoc_insertion_point(class_scope:hityavie.YavieParameter)
+ private:
+  inline void set_has_cam();
+  inline void clear_has_cam();
+  inline void set_has_np();
+  inline void clear_has_np();
+  inline void set_has_tp();
+  inline void clear_has_tp();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::hityavie::CameraParam* cam_;
+  ::hityavie::ImuNoiseParameter* np_;
+  ::hityavie::TrackerParam* tp_;
+  friend void  protobuf_AddDesc_param_2eproto();
+  friend void protobuf_AssignDesc_param_2eproto();
+  friend void protobuf_ShutdownFile_param_2eproto();
+
+  void InitAsDefaultInstance();
+  static YavieParameter* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class ImuNoiseParameter : public ::google::protobuf::Message {
  public:
@@ -144,10 +254,593 @@ class ImuNoiseParameter : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static ImuNoiseParameter* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class CameraParam : public ::google::protobuf::Message {
+ public:
+  CameraParam();
+  virtual ~CameraParam();
+
+  CameraParam(const CameraParam& from);
+
+  inline CameraParam& operator=(const CameraParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const CameraParam& default_instance();
+
+  void Swap(CameraParam* other);
+
+  // implements Message ----------------------------------------------
+
+  CameraParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const CameraParam& from);
+  void MergeFrom(const CameraParam& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required string type = 1;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 1;
+  inline const ::std::string& type() const;
+  inline void set_type(const ::std::string& value);
+  inline void set_type(const char* value);
+  inline void set_type(const char* value, size_t size);
+  inline ::std::string* mutable_type();
+  inline ::std::string* release_type();
+  inline void set_allocated_type(::std::string* type);
+
+  // repeated double tic = 2;
+  inline int tic_size() const;
+  inline void clear_tic();
+  static const int kTicFieldNumber = 2;
+  inline double tic(int index) const;
+  inline void set_tic(int index, double value);
+  inline void add_tic(double value);
+  inline const ::google::protobuf::RepeatedField< double >&
+      tic() const;
+  inline ::google::protobuf::RepeatedField< double >*
+      mutable_tic();
+
+  // optional .hityavie.FisheyeCameraParam fisheye_param = 3;
+  inline bool has_fisheye_param() const;
+  inline void clear_fisheye_param();
+  static const int kFisheyeParamFieldNumber = 3;
+  inline const ::hityavie::FisheyeCameraParam& fisheye_param() const;
+  inline ::hityavie::FisheyeCameraParam* mutable_fisheye_param();
+  inline ::hityavie::FisheyeCameraParam* release_fisheye_param();
+  inline void set_allocated_fisheye_param(::hityavie::FisheyeCameraParam* fisheye_param);
+
+  // @@protoc_insertion_point(class_scope:hityavie.CameraParam)
+ private:
+  inline void set_has_type();
+  inline void clear_has_type();
+  inline void set_has_fisheye_param();
+  inline void clear_has_fisheye_param();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::std::string* type_;
+  ::google::protobuf::RepeatedField< double > tic_;
+  ::hityavie::FisheyeCameraParam* fisheye_param_;
+  friend void  protobuf_AddDesc_param_2eproto();
+  friend void protobuf_AssignDesc_param_2eproto();
+  friend void protobuf_ShutdownFile_param_2eproto();
+
+  void InitAsDefaultInstance();
+  static CameraParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class FisheyeCameraParam : public ::google::protobuf::Message {
+ public:
+  FisheyeCameraParam();
+  virtual ~FisheyeCameraParam();
+
+  FisheyeCameraParam(const FisheyeCameraParam& from);
+
+  inline FisheyeCameraParam& operator=(const FisheyeCameraParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const FisheyeCameraParam& default_instance();
+
+  void Swap(FisheyeCameraParam* other);
+
+  // implements Message ----------------------------------------------
+
+  FisheyeCameraParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const FisheyeCameraParam& from);
+  void MergeFrom(const FisheyeCameraParam& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required double fx = 1;
+  inline bool has_fx() const;
+  inline void clear_fx();
+  static const int kFxFieldNumber = 1;
+  inline double fx() const;
+  inline void set_fx(double value);
+
+  // required double fy = 2;
+  inline bool has_fy() const;
+  inline void clear_fy();
+  static const int kFyFieldNumber = 2;
+  inline double fy() const;
+  inline void set_fy(double value);
+
+  // required double cx = 3;
+  inline bool has_cx() const;
+  inline void clear_cx();
+  static const int kCxFieldNumber = 3;
+  inline double cx() const;
+  inline void set_cx(double value);
+
+  // required double cy = 4;
+  inline bool has_cy() const;
+  inline void clear_cy();
+  static const int kCyFieldNumber = 4;
+  inline double cy() const;
+  inline void set_cy(double value);
+
+  // repeated double dist = 5;
+  inline int dist_size() const;
+  inline void clear_dist();
+  static const int kDistFieldNumber = 5;
+  inline double dist(int index) const;
+  inline void set_dist(int index, double value);
+  inline void add_dist(double value);
+  inline const ::google::protobuf::RepeatedField< double >&
+      dist() const;
+  inline ::google::protobuf::RepeatedField< double >*
+      mutable_dist();
+
+  // required int32 width = 6;
+  inline bool has_width() const;
+  inline void clear_width();
+  static const int kWidthFieldNumber = 6;
+  inline ::google::protobuf::int32 width() const;
+  inline void set_width(::google::protobuf::int32 value);
+
+  // required int32 height = 7;
+  inline bool has_height() const;
+  inline void clear_height();
+  static const int kHeightFieldNumber = 7;
+  inline ::google::protobuf::int32 height() const;
+  inline void set_height(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:hityavie.FisheyeCameraParam)
+ private:
+  inline void set_has_fx();
+  inline void clear_has_fx();
+  inline void set_has_fy();
+  inline void clear_has_fy();
+  inline void set_has_cx();
+  inline void clear_has_cx();
+  inline void set_has_cy();
+  inline void clear_has_cy();
+  inline void set_has_width();
+  inline void clear_has_width();
+  inline void set_has_height();
+  inline void clear_has_height();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  double fx_;
+  double fy_;
+  double cx_;
+  double cy_;
+  ::google::protobuf::RepeatedField< double > dist_;
+  ::google::protobuf::int32 width_;
+  ::google::protobuf::int32 height_;
+  friend void  protobuf_AddDesc_param_2eproto();
+  friend void protobuf_AssignDesc_param_2eproto();
+  friend void protobuf_ShutdownFile_param_2eproto();
+
+  void InitAsDefaultInstance();
+  static FisheyeCameraParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class TrackerParam : public ::google::protobuf::Message {
+ public:
+  TrackerParam();
+  virtual ~TrackerParam();
+
+  TrackerParam(const TrackerParam& from);
+
+  inline TrackerParam& operator=(const TrackerParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const TrackerParam& default_instance();
+
+  void Swap(TrackerParam* other);
+
+  // implements Message ----------------------------------------------
+
+  TrackerParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const TrackerParam& from);
+  void MergeFrom(const TrackerParam& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required string type = 1;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 1;
+  inline const ::std::string& type() const;
+  inline void set_type(const ::std::string& value);
+  inline void set_type(const char* value);
+  inline void set_type(const char* value, size_t size);
+  inline ::std::string* mutable_type();
+  inline ::std::string* release_type();
+  inline void set_allocated_type(::std::string* type);
+
+  // optional .hityavie.OpticalflowTrackerParam of_param = 2;
+  inline bool has_of_param() const;
+  inline void clear_of_param();
+  static const int kOfParamFieldNumber = 2;
+  inline const ::hityavie::OpticalflowTrackerParam& of_param() const;
+  inline ::hityavie::OpticalflowTrackerParam* mutable_of_param();
+  inline ::hityavie::OpticalflowTrackerParam* release_of_param();
+  inline void set_allocated_of_param(::hityavie::OpticalflowTrackerParam* of_param);
+
+  // @@protoc_insertion_point(class_scope:hityavie.TrackerParam)
+ private:
+  inline void set_has_type();
+  inline void clear_has_type();
+  inline void set_has_of_param();
+  inline void clear_has_of_param();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  ::std::string* type_;
+  ::hityavie::OpticalflowTrackerParam* of_param_;
+  friend void  protobuf_AddDesc_param_2eproto();
+  friend void protobuf_AssignDesc_param_2eproto();
+  friend void protobuf_ShutdownFile_param_2eproto();
+
+  void InitAsDefaultInstance();
+  static TrackerParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class OpticalflowTrackerParam : public ::google::protobuf::Message {
+ public:
+  OpticalflowTrackerParam();
+  virtual ~OpticalflowTrackerParam();
+
+  OpticalflowTrackerParam(const OpticalflowTrackerParam& from);
+
+  inline OpticalflowTrackerParam& operator=(const OpticalflowTrackerParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const OpticalflowTrackerParam& default_instance();
+
+  void Swap(OpticalflowTrackerParam* other);
+
+  // implements Message ----------------------------------------------
+
+  OpticalflowTrackerParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const OpticalflowTrackerParam& from);
+  void MergeFrom(const OpticalflowTrackerParam& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // required int32 min_feat_num = 1;
+  inline bool has_min_feat_num() const;
+  inline void clear_min_feat_num();
+  static const int kMinFeatNumFieldNumber = 1;
+  inline ::google::protobuf::int32 min_feat_num() const;
+  inline void set_min_feat_num(::google::protobuf::int32 value);
+
+  // required double nms_dist_thre = 2;
+  inline bool has_nms_dist_thre() const;
+  inline void clear_nms_dist_thre();
+  static const int kNmsDistThreFieldNumber = 2;
+  inline double nms_dist_thre() const;
+  inline void set_nms_dist_thre(double value);
+
+  // required int32 det_thre = 3;
+  inline bool has_det_thre() const;
+  inline void clear_det_thre();
+  static const int kDetThreFieldNumber = 3;
+  inline ::google::protobuf::int32 det_thre() const;
+  inline void set_det_thre(::google::protobuf::int32 value);
+
+  // required double bd_thre = 4;
+  inline bool has_bd_thre() const;
+  inline void clear_bd_thre();
+  static const int kBdThreFieldNumber = 4;
+  inline double bd_thre() const;
+  inline void set_bd_thre(double value);
+
+  // @@protoc_insertion_point(class_scope:hityavie.OpticalflowTrackerParam)
+ private:
+  inline void set_has_min_feat_num();
+  inline void clear_has_min_feat_num();
+  inline void set_has_nms_dist_thre();
+  inline void clear_has_nms_dist_thre();
+  inline void set_has_det_thre();
+  inline void clear_has_det_thre();
+  inline void set_has_bd_thre();
+  inline void clear_has_bd_thre();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint32 _has_bits_[1];
+  mutable int _cached_size_;
+  double nms_dist_thre_;
+  ::google::protobuf::int32 min_feat_num_;
+  ::google::protobuf::int32 det_thre_;
+  double bd_thre_;
+  friend void  protobuf_AddDesc_param_2eproto();
+  friend void protobuf_AssignDesc_param_2eproto();
+  friend void protobuf_ShutdownFile_param_2eproto();
+
+  void InitAsDefaultInstance();
+  static OpticalflowTrackerParam* default_instance_;
+};
 // ===================================================================
 
 
 // ===================================================================
+
+// YavieParameter
+
+// required .hityavie.CameraParam cam = 1;
+inline bool YavieParameter::has_cam() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void YavieParameter::set_has_cam() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void YavieParameter::clear_has_cam() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void YavieParameter::clear_cam() {
+  if (cam_ != NULL) cam_->::hityavie::CameraParam::Clear();
+  clear_has_cam();
+}
+inline const ::hityavie::CameraParam& YavieParameter::cam() const {
+  // @@protoc_insertion_point(field_get:hityavie.YavieParameter.cam)
+  return cam_ != NULL ? *cam_ : *default_instance_->cam_;
+}
+inline ::hityavie::CameraParam* YavieParameter::mutable_cam() {
+  set_has_cam();
+  if (cam_ == NULL) cam_ = new ::hityavie::CameraParam;
+  // @@protoc_insertion_point(field_mutable:hityavie.YavieParameter.cam)
+  return cam_;
+}
+inline ::hityavie::CameraParam* YavieParameter::release_cam() {
+  clear_has_cam();
+  ::hityavie::CameraParam* temp = cam_;
+  cam_ = NULL;
+  return temp;
+}
+inline void YavieParameter::set_allocated_cam(::hityavie::CameraParam* cam) {
+  delete cam_;
+  cam_ = cam;
+  if (cam) {
+    set_has_cam();
+  } else {
+    clear_has_cam();
+  }
+  // @@protoc_insertion_point(field_set_allocated:hityavie.YavieParameter.cam)
+}
+
+// required .hityavie.ImuNoiseParameter np = 2;
+inline bool YavieParameter::has_np() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void YavieParameter::set_has_np() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void YavieParameter::clear_has_np() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void YavieParameter::clear_np() {
+  if (np_ != NULL) np_->::hityavie::ImuNoiseParameter::Clear();
+  clear_has_np();
+}
+inline const ::hityavie::ImuNoiseParameter& YavieParameter::np() const {
+  // @@protoc_insertion_point(field_get:hityavie.YavieParameter.np)
+  return np_ != NULL ? *np_ : *default_instance_->np_;
+}
+inline ::hityavie::ImuNoiseParameter* YavieParameter::mutable_np() {
+  set_has_np();
+  if (np_ == NULL) np_ = new ::hityavie::ImuNoiseParameter;
+  // @@protoc_insertion_point(field_mutable:hityavie.YavieParameter.np)
+  return np_;
+}
+inline ::hityavie::ImuNoiseParameter* YavieParameter::release_np() {
+  clear_has_np();
+  ::hityavie::ImuNoiseParameter* temp = np_;
+  np_ = NULL;
+  return temp;
+}
+inline void YavieParameter::set_allocated_np(::hityavie::ImuNoiseParameter* np) {
+  delete np_;
+  np_ = np;
+  if (np) {
+    set_has_np();
+  } else {
+    clear_has_np();
+  }
+  // @@protoc_insertion_point(field_set_allocated:hityavie.YavieParameter.np)
+}
+
+// required .hityavie.TrackerParam tp = 3;
+inline bool YavieParameter::has_tp() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void YavieParameter::set_has_tp() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void YavieParameter::clear_has_tp() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void YavieParameter::clear_tp() {
+  if (tp_ != NULL) tp_->::hityavie::TrackerParam::Clear();
+  clear_has_tp();
+}
+inline const ::hityavie::TrackerParam& YavieParameter::tp() const {
+  // @@protoc_insertion_point(field_get:hityavie.YavieParameter.tp)
+  return tp_ != NULL ? *tp_ : *default_instance_->tp_;
+}
+inline ::hityavie::TrackerParam* YavieParameter::mutable_tp() {
+  set_has_tp();
+  if (tp_ == NULL) tp_ = new ::hityavie::TrackerParam;
+  // @@protoc_insertion_point(field_mutable:hityavie.YavieParameter.tp)
+  return tp_;
+}
+inline ::hityavie::TrackerParam* YavieParameter::release_tp() {
+  clear_has_tp();
+  ::hityavie::TrackerParam* temp = tp_;
+  tp_ = NULL;
+  return temp;
+}
+inline void YavieParameter::set_allocated_tp(::hityavie::TrackerParam* tp) {
+  delete tp_;
+  tp_ = tp;
+  if (tp) {
+    set_has_tp();
+  } else {
+    clear_has_tp();
+  }
+  // @@protoc_insertion_point(field_set_allocated:hityavie.YavieParameter.tp)
+}
+
+// -------------------------------------------------------------------
 
 // ImuNoiseParameter
 
@@ -245,6 +938,556 @@ inline void ImuNoiseParameter::set_bg_noise(double value) {
   set_has_bg_noise();
   bg_noise_ = value;
   // @@protoc_insertion_point(field_set:hityavie.ImuNoiseParameter.bg_noise)
+}
+
+// -------------------------------------------------------------------
+
+// CameraParam
+
+// required string type = 1;
+inline bool CameraParam::has_type() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void CameraParam::set_has_type() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void CameraParam::clear_has_type() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void CameraParam::clear_type() {
+  if (type_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_->clear();
+  }
+  clear_has_type();
+}
+inline const ::std::string& CameraParam::type() const {
+  // @@protoc_insertion_point(field_get:hityavie.CameraParam.type)
+  return *type_;
+}
+inline void CameraParam::set_type(const ::std::string& value) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_ = new ::std::string;
+  }
+  type_->assign(value);
+  // @@protoc_insertion_point(field_set:hityavie.CameraParam.type)
+}
+inline void CameraParam::set_type(const char* value) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_ = new ::std::string;
+  }
+  type_->assign(value);
+  // @@protoc_insertion_point(field_set_char:hityavie.CameraParam.type)
+}
+inline void CameraParam::set_type(const char* value, size_t size) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_ = new ::std::string;
+  }
+  type_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:hityavie.CameraParam.type)
+}
+inline ::std::string* CameraParam::mutable_type() {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:hityavie.CameraParam.type)
+  return type_;
+}
+inline ::std::string* CameraParam::release_type() {
+  clear_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = type_;
+    type_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void CameraParam::set_allocated_type(::std::string* type) {
+  if (type_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete type_;
+  }
+  if (type) {
+    set_has_type();
+    type_ = type;
+  } else {
+    clear_has_type();
+    type_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:hityavie.CameraParam.type)
+}
+
+// repeated double tic = 2;
+inline int CameraParam::tic_size() const {
+  return tic_.size();
+}
+inline void CameraParam::clear_tic() {
+  tic_.Clear();
+}
+inline double CameraParam::tic(int index) const {
+  // @@protoc_insertion_point(field_get:hityavie.CameraParam.tic)
+  return tic_.Get(index);
+}
+inline void CameraParam::set_tic(int index, double value) {
+  tic_.Set(index, value);
+  // @@protoc_insertion_point(field_set:hityavie.CameraParam.tic)
+}
+inline void CameraParam::add_tic(double value) {
+  tic_.Add(value);
+  // @@protoc_insertion_point(field_add:hityavie.CameraParam.tic)
+}
+inline const ::google::protobuf::RepeatedField< double >&
+CameraParam::tic() const {
+  // @@protoc_insertion_point(field_list:hityavie.CameraParam.tic)
+  return tic_;
+}
+inline ::google::protobuf::RepeatedField< double >*
+CameraParam::mutable_tic() {
+  // @@protoc_insertion_point(field_mutable_list:hityavie.CameraParam.tic)
+  return &tic_;
+}
+
+// optional .hityavie.FisheyeCameraParam fisheye_param = 3;
+inline bool CameraParam::has_fisheye_param() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void CameraParam::set_has_fisheye_param() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void CameraParam::clear_has_fisheye_param() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void CameraParam::clear_fisheye_param() {
+  if (fisheye_param_ != NULL) fisheye_param_->::hityavie::FisheyeCameraParam::Clear();
+  clear_has_fisheye_param();
+}
+inline const ::hityavie::FisheyeCameraParam& CameraParam::fisheye_param() const {
+  // @@protoc_insertion_point(field_get:hityavie.CameraParam.fisheye_param)
+  return fisheye_param_ != NULL ? *fisheye_param_ : *default_instance_->fisheye_param_;
+}
+inline ::hityavie::FisheyeCameraParam* CameraParam::mutable_fisheye_param() {
+  set_has_fisheye_param();
+  if (fisheye_param_ == NULL) fisheye_param_ = new ::hityavie::FisheyeCameraParam;
+  // @@protoc_insertion_point(field_mutable:hityavie.CameraParam.fisheye_param)
+  return fisheye_param_;
+}
+inline ::hityavie::FisheyeCameraParam* CameraParam::release_fisheye_param() {
+  clear_has_fisheye_param();
+  ::hityavie::FisheyeCameraParam* temp = fisheye_param_;
+  fisheye_param_ = NULL;
+  return temp;
+}
+inline void CameraParam::set_allocated_fisheye_param(::hityavie::FisheyeCameraParam* fisheye_param) {
+  delete fisheye_param_;
+  fisheye_param_ = fisheye_param;
+  if (fisheye_param) {
+    set_has_fisheye_param();
+  } else {
+    clear_has_fisheye_param();
+  }
+  // @@protoc_insertion_point(field_set_allocated:hityavie.CameraParam.fisheye_param)
+}
+
+// -------------------------------------------------------------------
+
+// FisheyeCameraParam
+
+// required double fx = 1;
+inline bool FisheyeCameraParam::has_fx() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void FisheyeCameraParam::set_has_fx() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void FisheyeCameraParam::clear_has_fx() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void FisheyeCameraParam::clear_fx() {
+  fx_ = 0;
+  clear_has_fx();
+}
+inline double FisheyeCameraParam::fx() const {
+  // @@protoc_insertion_point(field_get:hityavie.FisheyeCameraParam.fx)
+  return fx_;
+}
+inline void FisheyeCameraParam::set_fx(double value) {
+  set_has_fx();
+  fx_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.FisheyeCameraParam.fx)
+}
+
+// required double fy = 2;
+inline bool FisheyeCameraParam::has_fy() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void FisheyeCameraParam::set_has_fy() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void FisheyeCameraParam::clear_has_fy() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void FisheyeCameraParam::clear_fy() {
+  fy_ = 0;
+  clear_has_fy();
+}
+inline double FisheyeCameraParam::fy() const {
+  // @@protoc_insertion_point(field_get:hityavie.FisheyeCameraParam.fy)
+  return fy_;
+}
+inline void FisheyeCameraParam::set_fy(double value) {
+  set_has_fy();
+  fy_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.FisheyeCameraParam.fy)
+}
+
+// required double cx = 3;
+inline bool FisheyeCameraParam::has_cx() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void FisheyeCameraParam::set_has_cx() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void FisheyeCameraParam::clear_has_cx() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void FisheyeCameraParam::clear_cx() {
+  cx_ = 0;
+  clear_has_cx();
+}
+inline double FisheyeCameraParam::cx() const {
+  // @@protoc_insertion_point(field_get:hityavie.FisheyeCameraParam.cx)
+  return cx_;
+}
+inline void FisheyeCameraParam::set_cx(double value) {
+  set_has_cx();
+  cx_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.FisheyeCameraParam.cx)
+}
+
+// required double cy = 4;
+inline bool FisheyeCameraParam::has_cy() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void FisheyeCameraParam::set_has_cy() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void FisheyeCameraParam::clear_has_cy() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void FisheyeCameraParam::clear_cy() {
+  cy_ = 0;
+  clear_has_cy();
+}
+inline double FisheyeCameraParam::cy() const {
+  // @@protoc_insertion_point(field_get:hityavie.FisheyeCameraParam.cy)
+  return cy_;
+}
+inline void FisheyeCameraParam::set_cy(double value) {
+  set_has_cy();
+  cy_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.FisheyeCameraParam.cy)
+}
+
+// repeated double dist = 5;
+inline int FisheyeCameraParam::dist_size() const {
+  return dist_.size();
+}
+inline void FisheyeCameraParam::clear_dist() {
+  dist_.Clear();
+}
+inline double FisheyeCameraParam::dist(int index) const {
+  // @@protoc_insertion_point(field_get:hityavie.FisheyeCameraParam.dist)
+  return dist_.Get(index);
+}
+inline void FisheyeCameraParam::set_dist(int index, double value) {
+  dist_.Set(index, value);
+  // @@protoc_insertion_point(field_set:hityavie.FisheyeCameraParam.dist)
+}
+inline void FisheyeCameraParam::add_dist(double value) {
+  dist_.Add(value);
+  // @@protoc_insertion_point(field_add:hityavie.FisheyeCameraParam.dist)
+}
+inline const ::google::protobuf::RepeatedField< double >&
+FisheyeCameraParam::dist() const {
+  // @@protoc_insertion_point(field_list:hityavie.FisheyeCameraParam.dist)
+  return dist_;
+}
+inline ::google::protobuf::RepeatedField< double >*
+FisheyeCameraParam::mutable_dist() {
+  // @@protoc_insertion_point(field_mutable_list:hityavie.FisheyeCameraParam.dist)
+  return &dist_;
+}
+
+// required int32 width = 6;
+inline bool FisheyeCameraParam::has_width() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void FisheyeCameraParam::set_has_width() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void FisheyeCameraParam::clear_has_width() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void FisheyeCameraParam::clear_width() {
+  width_ = 0;
+  clear_has_width();
+}
+inline ::google::protobuf::int32 FisheyeCameraParam::width() const {
+  // @@protoc_insertion_point(field_get:hityavie.FisheyeCameraParam.width)
+  return width_;
+}
+inline void FisheyeCameraParam::set_width(::google::protobuf::int32 value) {
+  set_has_width();
+  width_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.FisheyeCameraParam.width)
+}
+
+// required int32 height = 7;
+inline bool FisheyeCameraParam::has_height() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void FisheyeCameraParam::set_has_height() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void FisheyeCameraParam::clear_has_height() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void FisheyeCameraParam::clear_height() {
+  height_ = 0;
+  clear_has_height();
+}
+inline ::google::protobuf::int32 FisheyeCameraParam::height() const {
+  // @@protoc_insertion_point(field_get:hityavie.FisheyeCameraParam.height)
+  return height_;
+}
+inline void FisheyeCameraParam::set_height(::google::protobuf::int32 value) {
+  set_has_height();
+  height_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.FisheyeCameraParam.height)
+}
+
+// -------------------------------------------------------------------
+
+// TrackerParam
+
+// required string type = 1;
+inline bool TrackerParam::has_type() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void TrackerParam::set_has_type() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void TrackerParam::clear_has_type() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void TrackerParam::clear_type() {
+  if (type_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_->clear();
+  }
+  clear_has_type();
+}
+inline const ::std::string& TrackerParam::type() const {
+  // @@protoc_insertion_point(field_get:hityavie.TrackerParam.type)
+  return *type_;
+}
+inline void TrackerParam::set_type(const ::std::string& value) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_ = new ::std::string;
+  }
+  type_->assign(value);
+  // @@protoc_insertion_point(field_set:hityavie.TrackerParam.type)
+}
+inline void TrackerParam::set_type(const char* value) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_ = new ::std::string;
+  }
+  type_->assign(value);
+  // @@protoc_insertion_point(field_set_char:hityavie.TrackerParam.type)
+}
+inline void TrackerParam::set_type(const char* value, size_t size) {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_ = new ::std::string;
+  }
+  type_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:hityavie.TrackerParam.type)
+}
+inline ::std::string* TrackerParam::mutable_type() {
+  set_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    type_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:hityavie.TrackerParam.type)
+  return type_;
+}
+inline ::std::string* TrackerParam::release_type() {
+  clear_has_type();
+  if (type_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = type_;
+    type_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void TrackerParam::set_allocated_type(::std::string* type) {
+  if (type_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete type_;
+  }
+  if (type) {
+    set_has_type();
+    type_ = type;
+  } else {
+    clear_has_type();
+    type_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:hityavie.TrackerParam.type)
+}
+
+// optional .hityavie.OpticalflowTrackerParam of_param = 2;
+inline bool TrackerParam::has_of_param() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void TrackerParam::set_has_of_param() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void TrackerParam::clear_has_of_param() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void TrackerParam::clear_of_param() {
+  if (of_param_ != NULL) of_param_->::hityavie::OpticalflowTrackerParam::Clear();
+  clear_has_of_param();
+}
+inline const ::hityavie::OpticalflowTrackerParam& TrackerParam::of_param() const {
+  // @@protoc_insertion_point(field_get:hityavie.TrackerParam.of_param)
+  return of_param_ != NULL ? *of_param_ : *default_instance_->of_param_;
+}
+inline ::hityavie::OpticalflowTrackerParam* TrackerParam::mutable_of_param() {
+  set_has_of_param();
+  if (of_param_ == NULL) of_param_ = new ::hityavie::OpticalflowTrackerParam;
+  // @@protoc_insertion_point(field_mutable:hityavie.TrackerParam.of_param)
+  return of_param_;
+}
+inline ::hityavie::OpticalflowTrackerParam* TrackerParam::release_of_param() {
+  clear_has_of_param();
+  ::hityavie::OpticalflowTrackerParam* temp = of_param_;
+  of_param_ = NULL;
+  return temp;
+}
+inline void TrackerParam::set_allocated_of_param(::hityavie::OpticalflowTrackerParam* of_param) {
+  delete of_param_;
+  of_param_ = of_param;
+  if (of_param) {
+    set_has_of_param();
+  } else {
+    clear_has_of_param();
+  }
+  // @@protoc_insertion_point(field_set_allocated:hityavie.TrackerParam.of_param)
+}
+
+// -------------------------------------------------------------------
+
+// OpticalflowTrackerParam
+
+// required int32 min_feat_num = 1;
+inline bool OpticalflowTrackerParam::has_min_feat_num() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void OpticalflowTrackerParam::set_has_min_feat_num() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void OpticalflowTrackerParam::clear_has_min_feat_num() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void OpticalflowTrackerParam::clear_min_feat_num() {
+  min_feat_num_ = 0;
+  clear_has_min_feat_num();
+}
+inline ::google::protobuf::int32 OpticalflowTrackerParam::min_feat_num() const {
+  // @@protoc_insertion_point(field_get:hityavie.OpticalflowTrackerParam.min_feat_num)
+  return min_feat_num_;
+}
+inline void OpticalflowTrackerParam::set_min_feat_num(::google::protobuf::int32 value) {
+  set_has_min_feat_num();
+  min_feat_num_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.OpticalflowTrackerParam.min_feat_num)
+}
+
+// required double nms_dist_thre = 2;
+inline bool OpticalflowTrackerParam::has_nms_dist_thre() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void OpticalflowTrackerParam::set_has_nms_dist_thre() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void OpticalflowTrackerParam::clear_has_nms_dist_thre() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void OpticalflowTrackerParam::clear_nms_dist_thre() {
+  nms_dist_thre_ = 0;
+  clear_has_nms_dist_thre();
+}
+inline double OpticalflowTrackerParam::nms_dist_thre() const {
+  // @@protoc_insertion_point(field_get:hityavie.OpticalflowTrackerParam.nms_dist_thre)
+  return nms_dist_thre_;
+}
+inline void OpticalflowTrackerParam::set_nms_dist_thre(double value) {
+  set_has_nms_dist_thre();
+  nms_dist_thre_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.OpticalflowTrackerParam.nms_dist_thre)
+}
+
+// required int32 det_thre = 3;
+inline bool OpticalflowTrackerParam::has_det_thre() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void OpticalflowTrackerParam::set_has_det_thre() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void OpticalflowTrackerParam::clear_has_det_thre() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void OpticalflowTrackerParam::clear_det_thre() {
+  det_thre_ = 0;
+  clear_has_det_thre();
+}
+inline ::google::protobuf::int32 OpticalflowTrackerParam::det_thre() const {
+  // @@protoc_insertion_point(field_get:hityavie.OpticalflowTrackerParam.det_thre)
+  return det_thre_;
+}
+inline void OpticalflowTrackerParam::set_det_thre(::google::protobuf::int32 value) {
+  set_has_det_thre();
+  det_thre_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.OpticalflowTrackerParam.det_thre)
+}
+
+// required double bd_thre = 4;
+inline bool OpticalflowTrackerParam::has_bd_thre() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void OpticalflowTrackerParam::set_has_bd_thre() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void OpticalflowTrackerParam::clear_has_bd_thre() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void OpticalflowTrackerParam::clear_bd_thre() {
+  bd_thre_ = 0;
+  clear_has_bd_thre();
+}
+inline double OpticalflowTrackerParam::bd_thre() const {
+  // @@protoc_insertion_point(field_get:hityavie.OpticalflowTrackerParam.bd_thre)
+  return bd_thre_;
+}
+inline void OpticalflowTrackerParam::set_bd_thre(double value) {
+  set_has_bd_thre();
+  bd_thre_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.OpticalflowTrackerParam.bd_thre)
 }
 
 

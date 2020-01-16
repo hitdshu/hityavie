@@ -2,9 +2,43 @@ syntax = "proto2";
 
 package hityavie;
 
+message YavieParameter {
+    required CameraParam cam = 1;
+    required ImuNoiseParameter np = 2;
+    required TrackerParam tp = 3;
+}
+
 message ImuNoiseParameter {
     required double acc_noise = 1;
     required double gyr_noise = 2;
     required double ba_noise = 3;
     required double bg_noise = 4;
+}
+
+message CameraParam {
+    required string type = 1;
+    repeated double tic = 2;
+    optional FisheyeCameraParam fisheye_param = 3;
+}
+
+message FisheyeCameraParam {
+    required double fx = 1;
+    required double fy = 2;
+    required double cx = 3;
+    required double cy = 4;
+    repeated double dist = 5;
+    required int32 width = 6;
+    required int32 height = 7;
+}
+
+message TrackerParam {
+    required string type = 1;
+    optional OpticalflowTrackerParam of_param = 2;
+}
+
+message OpticalflowTrackerParam {
+    required int32 min_feat_num = 1;
+    required double nms_dist_thre = 2;
+    required int32 det_thre = 3; 
+    required double bd_thre = 4;
 }
