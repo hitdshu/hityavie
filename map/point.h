@@ -3,35 +3,35 @@
 #include <memory>
 #include <map>
 #include <vector>
+#include <set>
+#include <Eigen/Dense>
+#include "map/frame.h"
 
 namespace hityavie {
 
-class Frame;
-
 class Point {
 public:
-    Point(int id);
+    typedef std::shared_ptr<Point> Ptr;
+
+    Point(int id, const Eigen::Vector3d &position);
     ~Point() = default;
 
-    void AddObservation(const std::shared_ptr<Frame> &frm, int fid);
-    void RemoveObservation(const std::shared_ptr<Frame> &frm);
-    void SetInvDepth(double inv_depth);
+    void AddObs(const Frame::Ptr &frm);
+    void RmObs(const Frame::Ptr &frm);
+    void SetPosition(const Eigen::Vector3d &p);
 
-    std::map<std::shared_ptr<Frame>, int> GetAllObs() const;
-    std::vector<std::shared_ptr<Frame>> GetAllFrms() const;
-    int GetFid4Frm(const std::shared_ptr<Frame> &frm) const;
-    int GetId() const;
+    std::vector<Frame::Ptr> GetAllObs() const;
+    Eigen::Vector3d GetPosition() const;
     int GetObsNum() const;
-    double GetInvDepth() const;
+    int GetId() const;
     
     Point(const Point &) = delete;
     Point &operator=(const Point &) = delete;
 
 private:
     int id_;
-    double inv_depth_;
-    std::shared_ptr<Frame> anchor_frm_;
-    std::map<std::shared_ptr<Frame>, int> frm_fid_map_;
+    Eigen::Vector3d position_;
+    std::set<Frame::Ptr> frms_;
 };
 
 } // namespace hityavie

@@ -4,26 +4,48 @@ namespace hityavie {
 
 int Frame::next_id_ = 0;
 
-std::vector<int> Frame::Init(const std::vector<std::pair<Eigen::Vector2d, std::shared_ptr<Point>>> &obss) {
+void Frame::Init(const std::vector<Feature> &feats) {
     id_ = next_id_++;
-    std::vector<int> fids;
-    int fid = 0;
-    for (const auto &obs : obss) {
-        fid_obs_map_[fid] = obs.first;
-        fid_pt_map_[fid] = obs.second;
-        fid++;
-        fids.push_back(fid);
+    for (const auto &feat : feats) {
+        features_[feat.id] = feat;
+        iseff_[feat.id] = false;
     }
-    return fids;
 }
 
-void Frame::RemovePointObs(const std::shared_ptr<Point> &pt) {
-    for (auto iter = fid_pt_map_.begin(); iter != fid_pt_map_.end(); ++iter) {
-        if (iter->second == pt) {
-            fid_pt_map_.erase(iter);
-            return;
-        }
+void Frame::EnableObs(int id) {
+    auto iter = features_.find(id);
+    if (iter != features_.end()) {
+        iseff_[iter->first] = true;
     }
+}
+
+void Frame::DisableObs(int id) {
+    auto iter = features_.find(id);
+    if (iter != features_.end()) {
+        iseff_[iter->first] = false;
+    }
+}
+
+bool Frame::IsEffeObs(int id) const {
+    auto iter = iseff_.find(id);
+    if (iter != iseff_.end()) {
+        return iter->second;
+    } else {
+        return false;
+    }
+}
+
+std::vector<Feature> Frame::GetFeatures() const {
+    std::vector<Feature> feats;
+    for (auto iter = features_.begin(); iter != features_.end(); ++iter) {
+        feats.push_back(iter->second);
+    }
+    return feats;
+}
+
+Feature Frame::GetFeature(int fid) const {
+    auto iter = features_.find(fid);
+    return iter->second;
 }
 
 } // namespace hityavie

@@ -26,4 +26,20 @@ Eigen::Matrix3d GeometryUtility::Skew(const Eigen::Vector3d &v) {
     return mat;
 }
 
+Eigen::Vector3d GeometryUtility::Triangulate(const Eigen::Matrix4d &tc1w, const Eigen::Vector3d &ray1, 
+    const Eigen::Matrix4d &tc2w, const Eigen::Vector3d &ray2) {
+    Eigen::Vector3d ray1n = ray1 / ray1[2];
+    Eigen::Vector3d ray2n = ray2 / ray2[2];
+    Eigen::Matrix4d A;
+    A.row(0) = tc1w.row(0) - ray1n[0] * tc1w.row(2);
+    A.row(1) = tc1w.row(1) - ray1n[1] * tc1w.row(2);
+    A.row(2) = tc2w.row(0) - ray2n[0] * tc2w.row(2);
+    A.row(3) = tc2w.row(1) - ray2n[1] * tc2w.row(2);
+    Eigen::JacobiSVD<Eigen::Matrix4d> svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::Vector4d v_last = svd.matrixV().col(3);
+    Eigen::Vector3d result;
+    result = v_last.block(0,0,3,1) / v_last[3];
+    return result;
+}
+
 } // namespace hityaview

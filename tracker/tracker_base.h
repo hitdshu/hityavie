@@ -18,6 +18,8 @@ struct Feature {
 
 class BaseTracker {
 public:
+    typedef std::shared_ptr<BaseTracker> Ptr;
+
     BaseTracker() = default;
     virtual ~BaseTracker() = default;
 

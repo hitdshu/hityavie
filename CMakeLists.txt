@@ -9,12 +9,14 @@ find_package(Eigen3 REQUIRED)
 find_package(OpenCV 3 REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(Ceres REQUIRED)
+find_package(Pangolin REQUIRED)
 
 include_directories(
 ${PROJECT_SOURCE_DIR}
 ${EIGEN3_INCLUDE_DIR}
 ${PROTOBUF_INCLUDE_DIRS}
 ${CERES_INCLUDE_DIRS}
+${Pangolin_INCLUDE_DIRS}
 )
 
 exec_program(protoc ARGS "--cpp_out=${PROJECT_SOURCE_DIR}/proto/ --proto_path=${PROJECT_SOURCE_DIR}/proto/ ${PROJECT_SOURCE_DIR}/proto/*.proto")
@@ -39,6 +41,7 @@ ${EIGEN3_LIBS}
 ${OpenCV_LIBS}
 ${PROTOBUF_LIBRARIES}
 ${CERES_LIBRARIES}
+${Pangolin_LIBRARIES}
 )
 
 add_executable(Test test.cc)

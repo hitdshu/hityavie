@@ -2,17 +2,33 @@
 
 #include <map>
 #include <Eigen/Dense>
-#include "map/point.h"
+#include "tracker/tracker_base.h"
 
 namespace hityavie {
 
 class Frame {
 public:
+    typedef std::shared_ptr<Frame> Ptr;
+
     Frame() = default;
     ~Frame() = default;
 
-    std::vector<int> Init(const std::vector<std::pair<Eigen::Vector2d, std::shared_ptr<Point>>> &obss);
-    void RemovePointObs(const std::shared_ptr<Point> &pt);
+    void Init(const std::vector<Feature> &feats);
+    void EnableObs(int id);
+    void DisableObs(int id);
+    void SetPose(const Eigen::Matrix4d &tcw) {
+        tcw_ = tcw;
+    }
+
+    bool IsEffeObs(int id) const;
+    std::vector<Feature> GetFeatures() const;
+    Feature GetFeature(int fid) const;
+    Eigen::Matrix4d GetPose() const {
+        return tcw_;
+    }
+    int GetId() const {
+        return id_;
+    }
 
     Frame(const Frame &) = delete;
     Frame &operator=(const Frame &) = delete;
@@ -21,8 +37,9 @@ private:
     static int next_id_;
 
     int id_;
-    std::map<int, Eigen::Vector2d> fid_obs_map_;
-    std::map<int, std::shared_ptr<Point>> fid_pt_map_;
+    std::map<int, Feature> features_;
+    std::map<int, bool> iseff_;
+    Eigen::Matrix4d tcw_;
 };
 
 } // namespace hityavie

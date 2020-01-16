@@ -35,6 +35,10 @@ bool CameraFisheye::Init(const CameraParam &param) {
     return true;
 }
 
+cv::Mat CameraFisheye::GetMatK() const {
+    return k_;
+}
+
 bool CameraFisheye::PreProcess(cv::Mat &img) const {
     cv::remap(img, img, mapx_, mapy_, CV_INTER_LINEAR);
     return true;

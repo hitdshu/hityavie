@@ -7,6 +7,7 @@ namespace hityavie {
 class CameraFisheye : public BaseCamera {
 public:
     virtual bool Init(const CameraParam &param) override;
+    virtual cv::Mat GetMatK() const override;
     virtual bool PreProcess(cv::Mat &img) const override;
     virtual Eigen::Vector2d UndistortPt(const Eigen::Vector2d &pt) const override;
     virtual std::vector<Eigen::Vector2d> UndistortPts(const std::vector<Eigen::Vector2d> &pts) const override;
