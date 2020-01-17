@@ -61,7 +61,6 @@ bool TrackerOpticalFlow::Track(cv::Mat &img, std::vector<Feature> &pts) {
         }
         cv::findFundamentalMat(prev_fund_pts, next_fund_pts, cv::FM_RANSAC, 2, 0.99, fund_status);
         pts = TrackerUtils::FilterByCond(pts, fund_status);
-        pts = TrackerUtils::KeyPtsNms(pts, param_.nms_dist_thre() / 4.0);
         if (pts.size() < param_.min_feat_num()) {
             cv::Mat mask(img.rows, img.cols, CV_8UC1, cv::Scalar(1));
             for (size_t idx = 0; idx < pts.size(); ++idx) {

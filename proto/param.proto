@@ -6,6 +6,7 @@ message YavieParameter {
     required CameraParam cam = 1;
     required ImuNoiseParameter np = 2;
     required TrackerParam tp = 3;
+    required SfmParam sp = 4;
 }
 
 message ImuNoiseParameter {
@@ -41,4 +42,11 @@ message OpticalflowTrackerParam {
     required double nms_dist_thre = 2;
     required int32 det_thre = 3; 
     required double bd_thre = 4;
+}
+
+message SfmParam {
+    required int32 min_frm_num = 1;
+    required int32 min_eff_obs_num = 2;
+    required int32 max_frm_interval = 3;
+    required int32 local_win_size = 4;
 }

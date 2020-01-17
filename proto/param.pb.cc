@@ -38,6 +38,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* OpticalflowTrackerParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   OpticalflowTrackerParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* SfmParam_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  SfmParam_reflection_ = NULL;
 
 }  // namespace
 
@@ -49,10 +52,11 @@ void protobuf_AssignDesc_param_2eproto() {
       "param.proto");
   GOOGLE_CHECK(file != NULL);
   YavieParameter_descriptor_ = file->message_type(0);
-  static const int YavieParameter_offsets_[3] = {
+  static const int YavieParameter_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, cam_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, np_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, tp_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, sp_),
   };
   YavieParameter_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -155,6 +159,24 @@ void protobuf_AssignDesc_param_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(OpticalflowTrackerParam));
+  SfmParam_descriptor_ = file->message_type(6);
+  static const int SfmParam_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, min_frm_num_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, min_eff_obs_num_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, max_frm_interval_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, local_win_size_),
+  };
+  SfmParam_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      SfmParam_descriptor_,
+      SfmParam::default_instance_,
+      SfmParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(SfmParam));
 }
 
 namespace {
@@ -179,6 +201,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     TrackerParam_descriptor_, &TrackerParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     OpticalflowTrackerParam_descriptor_, &OpticalflowTrackerParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    SfmParam_descriptor_, &SfmParam::default_instance());
 }
 
 }  // namespace
@@ -196,6 +220,8 @@ void protobuf_ShutdownFile_param_2eproto() {
   delete TrackerParam_reflection_;
   delete OpticalflowTrackerParam::default_instance_;
   delete OpticalflowTrackerParam_reflection_;
+  delete SfmParam::default_instance_;
+  delete SfmParam_reflection_;
 }
 
 void protobuf_AddDesc_param_2eproto() {
@@ -205,23 +231,26 @@ void protobuf_AddDesc_param_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\013param.proto\022\010hityavie\"\201\001\n\016YavieParamet"
+    "\n\013param.proto\022\010hityavie\"\241\001\n\016YavieParamet"
     "er\022\"\n\003cam\030\001 \002(\0132\025.hityavie.CameraParam\022\'"
     "\n\002np\030\002 \002(\0132\033.hityavie.ImuNoiseParameter\022"
-    "\"\n\002tp\030\003 \002(\0132\026.hityavie.TrackerParam\"]\n\021I"
-    "muNoiseParameter\022\021\n\tacc_noise\030\001 \002(\001\022\021\n\tg"
-    "yr_noise\030\002 \002(\001\022\020\n\010ba_noise\030\003 \002(\001\022\020\n\010bg_n"
-    "oise\030\004 \002(\001\"]\n\013CameraParam\022\014\n\004type\030\001 \002(\t\022"
-    "\013\n\003tic\030\002 \003(\001\0223\n\rfisheye_param\030\003 \001(\0132\034.hi"
-    "tyavie.FisheyeCameraParam\"q\n\022FisheyeCame"
-    "raParam\022\n\n\002fx\030\001 \002(\001\022\n\n\002fy\030\002 \002(\001\022\n\n\002cx\030\003 "
-    "\002(\001\022\n\n\002cy\030\004 \002(\001\022\014\n\004dist\030\005 \003(\001\022\r\n\005width\030\006"
-    " \002(\005\022\016\n\006height\030\007 \002(\005\"Q\n\014TrackerParam\022\014\n\004"
-    "type\030\001 \002(\t\0223\n\010of_param\030\002 \001(\0132!.hityavie."
-    "OpticalflowTrackerParam\"i\n\027OpticalflowTr"
-    "ackerParam\022\024\n\014min_feat_num\030\001 \002(\005\022\025\n\rnms_"
-    "dist_thre\030\002 \002(\001\022\020\n\010det_thre\030\003 \002(\005\022\017\n\007bd_"
-    "thre\030\004 \002(\001", 650);
+    "\"\n\002tp\030\003 \002(\0132\026.hityavie.TrackerParam\022\036\n\002s"
+    "p\030\004 \002(\0132\022.hityavie.SfmParam\"]\n\021ImuNoiseP"
+    "arameter\022\021\n\tacc_noise\030\001 \002(\001\022\021\n\tgyr_noise"
+    "\030\002 \002(\001\022\020\n\010ba_noise\030\003 \002(\001\022\020\n\010bg_noise\030\004 \002"
+    "(\001\"]\n\013CameraParam\022\014\n\004type\030\001 \002(\t\022\013\n\003tic\030\002"
+    " \003(\001\0223\n\rfisheye_param\030\003 \001(\0132\034.hityavie.F"
+    "isheyeCameraParam\"q\n\022FisheyeCameraParam\022"
+    "\n\n\002fx\030\001 \002(\001\022\n\n\002fy\030\002 \002(\001\022\n\n\002cx\030\003 \002(\001\022\n\n\002c"
+    "y\030\004 \002(\001\022\014\n\004dist\030\005 \003(\001\022\r\n\005width\030\006 \002(\005\022\016\n\006"
+    "height\030\007 \002(\005\"Q\n\014TrackerParam\022\014\n\004type\030\001 \002"
+    "(\t\0223\n\010of_param\030\002 \001(\0132!.hityavie.Opticalf"
+    "lowTrackerParam\"i\n\027OpticalflowTrackerPar"
+    "am\022\024\n\014min_feat_num\030\001 \002(\005\022\025\n\rnms_dist_thr"
+    "e\030\002 \002(\001\022\020\n\010det_thre\030\003 \002(\005\022\017\n\007bd_thre\030\004 \002"
+    "(\001\"j\n\010SfmParam\022\023\n\013min_frm_num\030\001 \002(\005\022\027\n\017m"
+    "in_eff_obs_num\030\002 \002(\005\022\030\n\020max_frm_interval"
+    "\030\003 \002(\005\022\026\n\016local_win_size\030\004 \002(\005", 790);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "param.proto", &protobuf_RegisterTypes);
   YavieParameter::default_instance_ = new YavieParameter();
@@ -230,12 +259,14 @@ void protobuf_AddDesc_param_2eproto() {
   FisheyeCameraParam::default_instance_ = new FisheyeCameraParam();
   TrackerParam::default_instance_ = new TrackerParam();
   OpticalflowTrackerParam::default_instance_ = new OpticalflowTrackerParam();
+  SfmParam::default_instance_ = new SfmParam();
   YavieParameter::default_instance_->InitAsDefaultInstance();
   ImuNoiseParameter::default_instance_->InitAsDefaultInstance();
   CameraParam::default_instance_->InitAsDefaultInstance();
   FisheyeCameraParam::default_instance_->InitAsDefaultInstance();
   TrackerParam::default_instance_->InitAsDefaultInstance();
   OpticalflowTrackerParam::default_instance_->InitAsDefaultInstance();
+  SfmParam::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_param_2eproto);
 }
 
@@ -252,6 +283,7 @@ struct StaticDescriptorInitializer_param_2eproto {
 const int YavieParameter::kCamFieldNumber;
 const int YavieParameter::kNpFieldNumber;
 const int YavieParameter::kTpFieldNumber;
+const int YavieParameter::kSpFieldNumber;
 #endif  // !_MSC_VER
 
 YavieParameter::YavieParameter()
@@ -264,6 +296,7 @@ void YavieParameter::InitAsDefaultInstance() {
   cam_ = const_cast< ::hityavie::CameraParam*>(&::hityavie::CameraParam::default_instance());
   np_ = const_cast< ::hityavie::ImuNoiseParameter*>(&::hityavie::ImuNoiseParameter::default_instance());
   tp_ = const_cast< ::hityavie::TrackerParam*>(&::hityavie::TrackerParam::default_instance());
+  sp_ = const_cast< ::hityavie::SfmParam*>(&::hityavie::SfmParam::default_instance());
 }
 
 YavieParameter::YavieParameter(const YavieParameter& from)
@@ -278,6 +311,7 @@ void YavieParameter::SharedCtor() {
   cam_ = NULL;
   np_ = NULL;
   tp_ = NULL;
+  sp_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -291,6 +325,7 @@ void YavieParameter::SharedDtor() {
     delete cam_;
     delete np_;
     delete tp_;
+    delete sp_;
   }
 }
 
@@ -316,7 +351,7 @@ YavieParameter* YavieParameter::New() const {
 }
 
 void YavieParameter::Clear() {
-  if (_has_bits_[0 / 32] & 7) {
+  if (_has_bits_[0 / 32] & 15) {
     if (has_cam()) {
       if (cam_ != NULL) cam_->::hityavie::CameraParam::Clear();
     }
@@ -325,6 +360,9 @@ void YavieParameter::Clear() {
     }
     if (has_tp()) {
       if (tp_ != NULL) tp_->::hityavie::TrackerParam::Clear();
+    }
+    if (has_sp()) {
+      if (sp_ != NULL) sp_->::hityavie::SfmParam::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -375,6 +413,19 @@ bool YavieParameter::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(34)) goto parse_sp;
+        break;
+      }
+
+      // required .hityavie.SfmParam sp = 4;
+      case 4: {
+        if (tag == 34) {
+         parse_sp:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_sp()));
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -422,6 +473,12 @@ void YavieParameter::SerializeWithCachedSizes(
       3, this->tp(), output);
   }
 
+  // required .hityavie.SfmParam sp = 4;
+  if (has_sp()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, this->sp(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -451,6 +508,13 @@ void YavieParameter::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         3, this->tp(), target);
+  }
+
+  // required .hityavie.SfmParam sp = 4;
+  if (has_sp()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        4, this->sp(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -484,6 +548,13 @@ int YavieParameter::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->tp());
+    }
+
+    // required .hityavie.SfmParam sp = 4;
+    if (has_sp()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->sp());
     }
 
   }
@@ -522,6 +593,9 @@ void YavieParameter::MergeFrom(const YavieParameter& from) {
     if (from.has_tp()) {
       mutable_tp()->::hityavie::TrackerParam::MergeFrom(from.tp());
     }
+    if (from.has_sp()) {
+      mutable_sp()->::hityavie::SfmParam::MergeFrom(from.sp());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -539,7 +613,7 @@ void YavieParameter::CopyFrom(const YavieParameter& from) {
 }
 
 bool YavieParameter::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
 
   if (has_cam()) {
     if (!this->cam().IsInitialized()) return false;
@@ -550,6 +624,9 @@ bool YavieParameter::IsInitialized() const {
   if (has_tp()) {
     if (!this->tp().IsInitialized()) return false;
   }
+  if (has_sp()) {
+    if (!this->sp().IsInitialized()) return false;
+  }
   return true;
 }
 
@@ -558,6 +635,7 @@ void YavieParameter::Swap(YavieParameter* other) {
     std::swap(cam_, other->cam_);
     std::swap(np_, other->np_);
     std::swap(tp_, other->tp_);
+    std::swap(sp_, other->sp_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -2351,6 +2429,357 @@ void OpticalflowTrackerParam::Swap(OpticalflowTrackerParam* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = OpticalflowTrackerParam_descriptor_;
   metadata.reflection = OpticalflowTrackerParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int SfmParam::kMinFrmNumFieldNumber;
+const int SfmParam::kMinEffObsNumFieldNumber;
+const int SfmParam::kMaxFrmIntervalFieldNumber;
+const int SfmParam::kLocalWinSizeFieldNumber;
+#endif  // !_MSC_VER
+
+SfmParam::SfmParam()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:hityavie.SfmParam)
+}
+
+void SfmParam::InitAsDefaultInstance() {
+}
+
+SfmParam::SfmParam(const SfmParam& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:hityavie.SfmParam)
+}
+
+void SfmParam::SharedCtor() {
+  _cached_size_ = 0;
+  min_frm_num_ = 0;
+  min_eff_obs_num_ = 0;
+  max_frm_interval_ = 0;
+  local_win_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+SfmParam::~SfmParam() {
+  // @@protoc_insertion_point(destructor:hityavie.SfmParam)
+  SharedDtor();
+}
+
+void SfmParam::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void SfmParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* SfmParam::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return SfmParam_descriptor_;
+}
+
+const SfmParam& SfmParam::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_param_2eproto();
+  return *default_instance_;
+}
+
+SfmParam* SfmParam::default_instance_ = NULL;
+
+SfmParam* SfmParam::New() const {
+  return new SfmParam;
+}
+
+void SfmParam::Clear() {
+#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
+  &reinterpret_cast<SfmParam*>(16)->f) - \
+   reinterpret_cast<char*>(16))
+
+#define ZR_(first, last) do {                              \
+    size_t f = OFFSET_OF_FIELD_(first);                    \
+    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
+    ::memset(&first, 0, n);                                \
+  } while (0)
+
+  ZR_(min_frm_num_, local_win_size_);
+
+#undef OFFSET_OF_FIELD_
+#undef ZR_
+
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool SfmParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:hityavie.SfmParam)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required int32 min_frm_num = 1;
+      case 1: {
+        if (tag == 8) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &min_frm_num_)));
+          set_has_min_frm_num();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_min_eff_obs_num;
+        break;
+      }
+
+      // required int32 min_eff_obs_num = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_min_eff_obs_num:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &min_eff_obs_num_)));
+          set_has_min_eff_obs_num();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(24)) goto parse_max_frm_interval;
+        break;
+      }
+
+      // required int32 max_frm_interval = 3;
+      case 3: {
+        if (tag == 24) {
+         parse_max_frm_interval:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &max_frm_interval_)));
+          set_has_max_frm_interval();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(32)) goto parse_local_win_size;
+        break;
+      }
+
+      // required int32 local_win_size = 4;
+      case 4: {
+        if (tag == 32) {
+         parse_local_win_size:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &local_win_size_)));
+          set_has_local_win_size();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:hityavie.SfmParam)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:hityavie.SfmParam)
+  return false;
+#undef DO_
+}
+
+void SfmParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:hityavie.SfmParam)
+  // required int32 min_frm_num = 1;
+  if (has_min_frm_num()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->min_frm_num(), output);
+  }
+
+  // required int32 min_eff_obs_num = 2;
+  if (has_min_eff_obs_num()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->min_eff_obs_num(), output);
+  }
+
+  // required int32 max_frm_interval = 3;
+  if (has_max_frm_interval()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->max_frm_interval(), output);
+  }
+
+  // required int32 local_win_size = 4;
+  if (has_local_win_size()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->local_win_size(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+  // @@protoc_insertion_point(serialize_end:hityavie.SfmParam)
+}
+
+::google::protobuf::uint8* SfmParam::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // @@protoc_insertion_point(serialize_to_array_start:hityavie.SfmParam)
+  // required int32 min_frm_num = 1;
+  if (has_min_frm_num()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->min_frm_num(), target);
+  }
+
+  // required int32 min_eff_obs_num = 2;
+  if (has_min_eff_obs_num()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->min_eff_obs_num(), target);
+  }
+
+  // required int32 max_frm_interval = 3;
+  if (has_max_frm_interval()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->max_frm_interval(), target);
+  }
+
+  // required int32 local_win_size = 4;
+  if (has_local_win_size()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->local_win_size(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:hityavie.SfmParam)
+  return target;
+}
+
+int SfmParam::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required int32 min_frm_num = 1;
+    if (has_min_frm_num()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->min_frm_num());
+    }
+
+    // required int32 min_eff_obs_num = 2;
+    if (has_min_eff_obs_num()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->min_eff_obs_num());
+    }
+
+    // required int32 max_frm_interval = 3;
+    if (has_max_frm_interval()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->max_frm_interval());
+    }
+
+    // required int32 local_win_size = 4;
+    if (has_local_win_size()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->local_win_size());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SfmParam::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const SfmParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const SfmParam*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void SfmParam::MergeFrom(const SfmParam& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_min_frm_num()) {
+      set_min_frm_num(from.min_frm_num());
+    }
+    if (from.has_min_eff_obs_num()) {
+      set_min_eff_obs_num(from.min_eff_obs_num());
+    }
+    if (from.has_max_frm_interval()) {
+      set_max_frm_interval(from.max_frm_interval());
+    }
+    if (from.has_local_win_size()) {
+      set_local_win_size(from.local_win_size());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void SfmParam::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SfmParam::CopyFrom(const SfmParam& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SfmParam::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+
+  return true;
+}
+
+void SfmParam::Swap(SfmParam* other) {
+  if (other != this) {
+    std::swap(min_frm_num_, other->min_frm_num_);
+    std::swap(min_eff_obs_num_, other->min_eff_obs_num_);
+    std::swap(max_frm_interval_, other->max_frm_interval_);
+    std::swap(local_win_size_, other->local_win_size_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata SfmParam::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = SfmParam_descriptor_;
+  metadata.reflection = SfmParam_reflection_;
   return metadata;
 }
 

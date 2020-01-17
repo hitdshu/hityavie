@@ -7,6 +7,12 @@ Point::Point(int id, const Eigen::Vector3d &p) {
     position_ = p;
 }
 
+Point::~Point() {
+    for (auto iter = frms_.begin(); iter != frms_.end(); ++iter) {
+        (*iter)->DisableObs(id_);
+    }
+}
+
 void Point::AddObs(const Frame::Ptr &frm) {
     frms_.insert(frm);
 }

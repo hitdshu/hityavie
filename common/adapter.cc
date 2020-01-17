@@ -24,6 +24,30 @@ Eigen::Vector2d Adapter::Pt2Vec(const cv::Point2f &pt) {
     return v;
 }
 
+Eigen::Vector4d Adapter::Rot2Quat(const Eigen::Matrix3d &rot) {
+    Eigen::Quaterniond quat(rot);
+    Eigen::Vector4d quatv;
+    quatv << quat.w(), quat.x(), quat.y(), quat.z();
+    return quatv;
+}
+
+Eigen::Matrix3d Adapter::Quat2Rot(const Eigen::Vector4d &quat) {
+    Eigen::Quaterniond q;
+    q.w() = quat[0];
+    q.x() = quat[1];
+    q.y() = quat[2];
+    q.z() = quat[3];
+    return q.toRotationMatrix();
+}
+
+Eigen::Matrix3d Adapter::Cvk2Matk(const cv::Mat &kcv) {
+    Eigen::Matrix3d k;
+    k << kcv.at<float>(0, 0), kcv.at<float>(0, 1), kcv.at<float>(0, 2), 
+        kcv.at<float>(1, 0), kcv.at<float>(1, 1), kcv.at<float>(1, 2), 
+        kcv.at<float>(2, 0), kcv.at<float>(2, 1), kcv.at<float>(2, 2);
+    return k;
+}
+
 pangolin::OpenGlMatrix Adapter::EigenMat2Pangolin(const Eigen::Matrix4d &t) {
     pangolin::OpenGlMatrix mat;
     mat.SetIdentity();

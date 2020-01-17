@@ -10,16 +10,16 @@ class Frame {
 public:
     typedef std::shared_ptr<Frame> Ptr;
 
-    Frame() = default;
+    Frame(const std::vector<Feature> &feats);
     ~Frame() = default;
 
-    void Init(const std::vector<Feature> &feats);
     void EnableObs(int id);
     void DisableObs(int id);
     void SetPose(const Eigen::Matrix4d &tcw) {
         tcw_ = tcw;
     }
 
+    int GetEffObsNum() const;
     bool IsEffeObs(int id) const;
     std::vector<Feature> GetFeatures() const;
     Feature GetFeature(int fid) const;

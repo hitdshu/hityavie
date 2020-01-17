@@ -14,7 +14,7 @@ public:
     typedef std::shared_ptr<Point> Ptr;
 
     Point(int id, const Eigen::Vector3d &position);
-    ~Point() = default;
+    ~Point();
 
     void AddObs(const Frame::Ptr &frm);
     void RmObs(const Frame::Ptr &frm);

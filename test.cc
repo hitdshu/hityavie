@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
     tracker.reset(BaseTrackerRegisterer::GetInstanceByName(param.tp().type()));
     tracker->Init(param.tp(), cam);
     Map::Ptr map(new Map());
-    Sfm::Ptr sfm(new Sfm(map, cam));
+    Sfm::Ptr sfm(new Sfm(map, cam, param.sp()));
     // Viewer::Ptr viewer(new Viewer());
     // viewer->InitViewer(map);
     Timer timer;
@@ -55,8 +55,7 @@ int main(int argc, char **argv) {
 
         timer.Tic();
         bool feat_status = tracker->Track(img, kpts);
-        Frame::Ptr nf(new Frame());
-        nf->Init(kpts);
+        Frame::Ptr nf(new Frame(kpts));
         sfm->PushFrame(nf);
         timer.Toc("feature tracking");
 
@@ -71,22 +70,12 @@ int main(int argc, char **argv) {
                 id_position_map[pt.id] = pt.pt_ori;
             }
         }
-        // std::vector<Feature> feats = nf->GetFeatures();
-        // Eigen::Matrix4d tcw = nf->GetPose();
-        // for (const auto &feat : feats) {
-        //     if (nf->IsEffeObs(feat.id)) {
-        //         Eigen::Vector3d pw = map->GetPoint(feat.id)->GetPosition();
-        //         Eigen::Vector3d pc = GeometryUtility::Transform(tcw, pw);
-        //         Eigen::Vector2d pp_und = cam->Project(pc);
-        //         std::cout << (pp_und - feat.pt_und).transpose() << std::endl;
-        //     }
-        // }
         cv::cvtColor(img, img, CV_GRAY2BGR);
         Drawer::DrawPts(img, kpts_old, true, cv::Scalar(0, 255, 0));
         Drawer::DrawPts(img, kpts_new, true, cv::Scalar(0, 0, 255));
         Drawer::DrawPtsTraj(img, pts_prev, pts_cur, cv::Scalar(0, 255, 0));
         cv::imshow("img", img);
-        cv::waitKey(1);
+        cv::waitKey(0);
     }
 
     return 0;

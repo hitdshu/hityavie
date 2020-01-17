@@ -1,9 +1,11 @@
 #pragma once
 
 #include <memory>
+#include <set>
 #include "map/map.h"
 #include "map/initializer.h"
 #include "camera/camera_base.h"
+#include "proto/param.pb.h"
 
 namespace hityavie {
 
@@ -17,7 +19,7 @@ class Sfm {
 public:
     typedef std::shared_ptr<Sfm> Ptr;
 
-    Sfm(const Map::Ptr &map, const BaseCamera::Ptr &cam);
+    Sfm(const Map::Ptr &map, const BaseCamera::Ptr &cam, const SfmParam &sp);
     ~Sfm() = default;
 
     void PushFrame(Frame::Ptr &frm);
@@ -31,10 +33,16 @@ public:
 
 protected:
     void SolvePnp(const Frame::Ptr &last_frm, const Frame::Ptr &cur_frm);
+    void AddKeyFrame(const Frame::Ptr &last_frm, const Frame::Ptr &cur_frm);
+    void LocalOptimize();
+    void GlobalOptimize();
 
 private:
     Map::Ptr map_;
     BaseCamera::Ptr cam_;
+    SfmParam sp_;
+    Eigen::Matrix4d tcpcc_;
+    Eigen::Matrix4d twcp_;
     Initializer::Ptr initer_;
     SfmState state_;
 };
