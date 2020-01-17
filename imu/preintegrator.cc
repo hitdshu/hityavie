@@ -3,7 +3,7 @@
 
 namespace hityavie {
 
-void Preintegrator::Init(const ImuNoiseParameter &np, const Eigen::Vector3d g, const Eigen::Vector3d &acc_init, const Eigen::Vector3d &gyr_init, const Eigen::Vector3d &ba_init, const Eigen::Vector3d &bg_init) {
+void Preintegrator::Init(const ImuNoiseParameter &np, const Eigen::Vector3d &g, const Eigen::Vector3d &acc_init, const Eigen::Vector3d &gyr_init, const Eigen::Vector3d &ba_init, const Eigen::Vector3d &bg_init) {
     p_.setZero();
     v_.setZero();
     q_.setIdentity();
@@ -104,6 +104,26 @@ void Preintegrator::Propagate(double dt, const Eigen::Vector3d &acc, const Eigen
     p_ = np;
     v_ = nv;
     q_ = nq;
+}
+
+Eigen::Vector3d Preintegrator::GetP() const {
+    return p_;
+}
+
+Eigen::Vector3d Preintegrator::GetV() const {
+    return v_;
+}
+
+Eigen::Quaterniond Preintegrator::GetQ() const {
+    return q_;
+}
+
+Eigen::Vector3d Preintegrator::GetBa() const {
+    return ba_;
+}
+
+Eigen::Vector3d Preintegrator::GetBg() const {
+    return bg_;
 }
 
 } // namespace hityavie

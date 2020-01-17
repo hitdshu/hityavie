@@ -49,4 +49,32 @@ Eigen::Vector3d GeometryUtility::Transform(const Eigen::Matrix4d &tcw, const Eig
     return pch.block(0, 0, 3, 1) / pch[3];
 }
 
+Eigen::Matrix4d GeometryUtility::QuatLmat(const Eigen::Vector4d &quat) {
+    Eigen::Matrix4d ql = quat[0] * Eigen::Matrix4d::Identity();
+    ql.block(1, 0, 3, 1) += quat.block(1, 0, 3, 1);
+    ql.block(0, 1, 1, 3) -= quat.block(1, 0, 3, 1).transpose();
+    ql.block(1, 1, 3, 3) += Skew(quat.block(1, 0, 3, 1));
+    return ql;
+}
+
+Eigen::Matrix4d GeometryUtility::QuatLmat(const Eigen::Quaterniond &quat) {
+    Eigen::Vector4d quatv;
+    quatv << quat.w(), quat.x(), quat.y(), quat.z();
+    return QuatLmat(quatv);
+}
+
+Eigen::Matrix4d GeometryUtility::QuatRmat(const Eigen::Vector4d &quat) {
+    Eigen::Matrix4d ql = quat[0] * Eigen::Matrix4d::Identity();
+    ql.block(1, 0, 3, 1) += quat.block(1, 0, 3, 1);
+    ql.block(0, 1, 1, 3) -= quat.block(1, 0, 3, 1).transpose();
+    ql.block(1, 1, 3, 3) -= Skew(quat.block(1, 0, 3, 1));
+    return ql;
+}
+
+Eigen::Matrix4d GeometryUtility::QuatRmat(const Eigen::Quaterniond &quat) {
+    Eigen::Vector4d quatv;
+    quatv << quat.w(), quat.x(), quat.y(), quat.z();
+    return QuatRmat(quatv);
+}
+
 } // namespace hityaview

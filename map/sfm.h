@@ -24,6 +24,7 @@ public:
 
     void PushFrame(Frame::Ptr &frm);
 
+    Eigen::Matrix4d GetRelativePose() const;
     SfmState GetState() const {
         return state_;
     }

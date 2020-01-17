@@ -34,4 +34,18 @@ ImuData ImuReader::GetImu4Timestamp(double timestamp) const {
     }
 }
 
+std::vector<ImuData> ImuReader::GetImuDataBetweenImages(double timestamp1, double timestamp2) const {
+    std::vector<ImuData> data;
+    auto iter1 = timestamp_imu_map_.upper_bound(timestamp1);
+    auto iter2 = timestamp_imu_map_.lower_bound(timestamp2);
+    while (iter1 != iter2) {
+        data.push_back(iter1->second);
+        ++iter1;
+    }
+    ImuData last = data[data.size() - 1];
+    last.timestamp = timestamp2;
+    data.push_back(last);
+    return data;
+}
+
 } // namespace hityavie

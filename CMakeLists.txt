@@ -27,6 +27,7 @@ file(GLOB IMU_CC "${PROJECT_SOURCE_DIR}/imu/*.cc")
 file(GLOB MAP_CC "${PROJECT_SOURCE_DIR}/map/*.cc")
 file(GLOB PROTO_CC "${PROJECT_SOURCE_DIR}/proto/*.cc")
 file(GLOB TRACKER_CC "${PROJECT_SOURCE_DIR}/tracker/*.cc")
+file(GLOB YAVIE_CC "${PROJECT_SOURCE_DIR}/yavie/*.cc")
 
 add_library(${PROJECT_NAME} SHARED
 ${CAMERA_CC}
@@ -35,6 +36,7 @@ ${IMU_CC}
 ${MAP_CC}
 ${PROTO_CC}
 ${TRACKER_CC}
+${YAVIE_CC}
 )
 target_link_libraries(${PROJECT_NAME}
 ${EIGEN3_LIBS}

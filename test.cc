@@ -12,6 +12,8 @@
 #include "map/map.h"
 #include "map/sfm.h"
 #include "map/viewer.h"
+#include "imu/preintegrator.h"
+#include "yavie/rotation_calib.h"
 
 using namespace hityavie;
 
@@ -38,10 +40,14 @@ int main(int argc, char **argv) {
     tracker->Init(param.tp(), cam);
     Map::Ptr map(new Map());
     Sfm::Ptr sfm(new Sfm(map, cam, param.sp()));
+    RotationCalib::Ptr calib(new RotationCalib());
     // Viewer::Ptr viewer(new Viewer());
     // viewer->InitViewer(map);
+    Eigen::Vector3d gravity;
+    gravity << 0, 0, 9.81;
     Timer timer;
     std::map<int, Eigen::Vector2d> id_position_map;
+    double last_img_timestamp;
 
     for (int img_idx = start_idx; img_idx <= end_idx; ++img_idx) {
         std::cout << "Img idx " << img_idx << std::endl;
@@ -55,9 +61,27 @@ int main(int argc, char **argv) {
 
         timer.Tic();
         bool feat_status = tracker->Track(img, kpts);
+        timer.Toc("feature tracking");
+        timer.Tic();
         Frame::Ptr nf(new Frame(kpts));
         sfm->PushFrame(nf);
-        timer.Toc("feature tracking");
+        timer.Toc("sfm");
+        timer.Tic();
+        if (sfm->GetState() != kSfmEmpty && !calib->IsDone()) {
+            Preintegrator::Ptr pitor(new Preintegrator());
+            std::vector<ImuData> imu_data = imu_reader.GetImuDataBetweenImages(last_img_timestamp, img_timestamp);
+            Eigen::Vector3d acc_init = imu_data[0].lin_acc;
+            Eigen::Vector3d gyr_init = imu_data[0].ang_vel;
+            pitor->Init(param.np(), gravity, acc_init, gyr_init, Eigen::Vector3d::Zero(), Eigen::Vector3d::Zero());
+            for (const auto &id : imu_data) {
+                pitor->Integrate(id.timestamp - last_img_timestamp, id.lin_acc, id.ang_vel);
+            }
+            calib->Calibrate(sfm->GetRelativePose().block(0, 0, 3, 3), pitor->GetQ().toRotationMatrix());
+            if (calib->IsDone()) {
+                std::cout << "Calibrated ric: " << std::endl << calib->GetRic() << std::endl;
+            }
+        }
+        timer.Toc("imu integration");
 
         for (const auto &pt : kpts) {
             if (id_position_map.count(pt.id)) {
@@ -76,6 +100,7 @@ int main(int argc, char **argv) {
         Drawer::DrawPtsTraj(img, pts_prev, pts_cur, cv::Scalar(0, 255, 0));
         cv::imshow("img", img);
         cv::waitKey(0);
+        last_img_timestamp = img_timestamp;
     }
 
     return 0;

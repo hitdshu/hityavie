@@ -20,6 +20,7 @@ public:
     bool Init(const std::string &data_file_path, double min_timestamp = 0);
     std::map<double, ImuData> GetAllImuData() const;
     ImuData GetImu4Timestamp(double timestamp) const;
+    std::vector<ImuData> GetImuDataBetweenImages(double timestamp1, double timestamp2) const;
 
     ImuReader(const ImuReader &) = delete;
     ImuReader &operator=(const ImuReader &) = delete;

@@ -2,20 +2,29 @@
 
 #include <vector>
 #include <Eigen/Dense>
+#include <memory>
 #include "proto/param.pb.h"
 
 namespace hityavie {
 
 class Preintegrator {
 public:
+    typedef std::shared_ptr<Preintegrator> Ptr;
+
     Preintegrator() = default;
     ~Preintegrator() = default;
 
-    void Init(const ImuNoiseParameter &np, const Eigen::Vector3d g, const Eigen::Vector3d &acc_init, const Eigen::Vector3d &gyr_init, const Eigen::Vector3d &ba_init, const Eigen::Vector3d &bg_init);
+    void Init(const ImuNoiseParameter &np, const Eigen::Vector3d &g, const Eigen::Vector3d &acc_init, const Eigen::Vector3d &gyr_init, const Eigen::Vector3d &ba_init, const Eigen::Vector3d &bg_init);
     void Integrate(double dt, const Eigen::Vector3d &acc, const Eigen::Vector3d &gyr);
     void Reintegrate(const Eigen::Vector3d &ba_init, const Eigen::Vector3d &bg_init);
     Eigen::Matrix<double, 15, 1> Evaluate(const Eigen::Vector3d &p1, const Eigen::Quaterniond &q1, const Eigen::Vector3d &v1, const Eigen::Vector3d &ba1, const Eigen::Vector3d &bg1, 
         const Eigen::Vector3d &p2, const Eigen::Quaterniond &q2, const Eigen::Vector3d &v2, const Eigen::Vector3d &ba2, const Eigen::Vector3d &bg2);
+
+    Eigen::Vector3d GetP() const;
+    Eigen::Vector3d GetV() const;
+    Eigen::Quaterniond GetQ() const;
+    Eigen::Vector3d GetBa() const;
+    Eigen::Vector3d GetBg() const;
 
     Preintegrator(const Preintegrator &) = delete;
     Preintegrator &operator=(const Preintegrator &) = delete;

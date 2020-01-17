@@ -37,6 +37,10 @@ void Sfm::PushFrame(Frame::Ptr &frm) {
     }
 }
 
+Eigen::Matrix4d Sfm::GetRelativePose() const {
+    return tcpcc_;
+}
+
 void Sfm::SolvePnp(const Frame::Ptr &last_frm, const Frame::Ptr &cur_frm) {
     std::vector<Eigen::Vector2d> vs2d;
     std::vector<Eigen::Vector3d> vs3d;
