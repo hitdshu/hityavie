@@ -52,11 +52,12 @@ void protobuf_AssignDesc_param_2eproto() {
       "param.proto");
   GOOGLE_CHECK(file != NULL);
   YavieParameter_descriptor_ = file->message_type(0);
-  static const int YavieParameter_offsets_[4] = {
+  static const int YavieParameter_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, cam_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, np_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, tp_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, sp_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, gravity_),
   };
   YavieParameter_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -231,26 +232,27 @@ void protobuf_AddDesc_param_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\013param.proto\022\010hityavie\"\241\001\n\016YavieParamet"
+    "\n\013param.proto\022\010hityavie\"\262\001\n\016YavieParamet"
     "er\022\"\n\003cam\030\001 \002(\0132\025.hityavie.CameraParam\022\'"
     "\n\002np\030\002 \002(\0132\033.hityavie.ImuNoiseParameter\022"
     "\"\n\002tp\030\003 \002(\0132\026.hityavie.TrackerParam\022\036\n\002s"
-    "p\030\004 \002(\0132\022.hityavie.SfmParam\"]\n\021ImuNoiseP"
-    "arameter\022\021\n\tacc_noise\030\001 \002(\001\022\021\n\tgyr_noise"
-    "\030\002 \002(\001\022\020\n\010ba_noise\030\003 \002(\001\022\020\n\010bg_noise\030\004 \002"
-    "(\001\"]\n\013CameraParam\022\014\n\004type\030\001 \002(\t\022\013\n\003tic\030\002"
-    " \003(\001\0223\n\rfisheye_param\030\003 \001(\0132\034.hityavie.F"
-    "isheyeCameraParam\"q\n\022FisheyeCameraParam\022"
-    "\n\n\002fx\030\001 \002(\001\022\n\n\002fy\030\002 \002(\001\022\n\n\002cx\030\003 \002(\001\022\n\n\002c"
-    "y\030\004 \002(\001\022\014\n\004dist\030\005 \003(\001\022\r\n\005width\030\006 \002(\005\022\016\n\006"
-    "height\030\007 \002(\005\"Q\n\014TrackerParam\022\014\n\004type\030\001 \002"
-    "(\t\0223\n\010of_param\030\002 \001(\0132!.hityavie.Opticalf"
-    "lowTrackerParam\"i\n\027OpticalflowTrackerPar"
-    "am\022\024\n\014min_feat_num\030\001 \002(\005\022\025\n\rnms_dist_thr"
-    "e\030\002 \002(\001\022\020\n\010det_thre\030\003 \002(\005\022\017\n\007bd_thre\030\004 \002"
-    "(\001\"t\n\010SfmParam\022\027\n\017min_eff_obs_num\030\001 \002(\005\022"
-    "\030\n\020max_frm_interval\030\002 \002(\005\022\026\n\016local_win_s"
-    "ize\030\003 \002(\005\022\035\n\025min_tracking_feat_num\030\004 \002(\005", 800);
+    "p\030\004 \002(\0132\022.hityavie.SfmParam\022\017\n\007gravity\030\005"
+    " \002(\001\"]\n\021ImuNoiseParameter\022\021\n\tacc_noise\030\001"
+    " \002(\001\022\021\n\tgyr_noise\030\002 \002(\001\022\020\n\010ba_noise\030\003 \002("
+    "\001\022\020\n\010bg_noise\030\004 \002(\001\"]\n\013CameraParam\022\014\n\004ty"
+    "pe\030\001 \002(\t\022\013\n\003tic\030\002 \003(\001\0223\n\rfisheye_param\030\003"
+    " \001(\0132\034.hityavie.FisheyeCameraParam\"q\n\022Fi"
+    "sheyeCameraParam\022\n\n\002fx\030\001 \002(\001\022\n\n\002fy\030\002 \002(\001"
+    "\022\n\n\002cx\030\003 \002(\001\022\n\n\002cy\030\004 \002(\001\022\014\n\004dist\030\005 \003(\001\022\r"
+    "\n\005width\030\006 \002(\005\022\016\n\006height\030\007 \002(\005\"Q\n\014Tracker"
+    "Param\022\014\n\004type\030\001 \002(\t\0223\n\010of_param\030\002 \001(\0132!."
+    "hityavie.OpticalflowTrackerParam\"i\n\027Opti"
+    "calflowTrackerParam\022\024\n\014min_feat_num\030\001 \002("
+    "\005\022\025\n\rnms_dist_thre\030\002 \002(\001\022\020\n\010det_thre\030\003 \002"
+    "(\005\022\017\n\007bd_thre\030\004 \002(\001\"t\n\010SfmParam\022\027\n\017min_e"
+    "ff_obs_num\030\001 \002(\005\022\030\n\020max_frm_interval\030\002 \002"
+    "(\005\022\026\n\016local_win_size\030\003 \002(\005\022\035\n\025min_tracki"
+    "ng_feat_num\030\004 \002(\005", 817);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "param.proto", &protobuf_RegisterTypes);
   YavieParameter::default_instance_ = new YavieParameter();
@@ -284,6 +286,7 @@ const int YavieParameter::kCamFieldNumber;
 const int YavieParameter::kNpFieldNumber;
 const int YavieParameter::kTpFieldNumber;
 const int YavieParameter::kSpFieldNumber;
+const int YavieParameter::kGravityFieldNumber;
 #endif  // !_MSC_VER
 
 YavieParameter::YavieParameter()
@@ -312,6 +315,7 @@ void YavieParameter::SharedCtor() {
   np_ = NULL;
   tp_ = NULL;
   sp_ = NULL;
+  gravity_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -351,7 +355,7 @@ YavieParameter* YavieParameter::New() const {
 }
 
 void YavieParameter::Clear() {
-  if (_has_bits_[0 / 32] & 15) {
+  if (_has_bits_[0 / 32] & 31) {
     if (has_cam()) {
       if (cam_ != NULL) cam_->::hityavie::CameraParam::Clear();
     }
@@ -364,6 +368,7 @@ void YavieParameter::Clear() {
     if (has_sp()) {
       if (sp_ != NULL) sp_->::hityavie::SfmParam::Clear();
     }
+    gravity_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -426,6 +431,21 @@ bool YavieParameter::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(41)) goto parse_gravity;
+        break;
+      }
+
+      // required double gravity = 5;
+      case 5: {
+        if (tag == 41) {
+         parse_gravity:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &gravity_)));
+          set_has_gravity();
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -479,6 +499,11 @@ void YavieParameter::SerializeWithCachedSizes(
       4, this->sp(), output);
   }
 
+  // required double gravity = 5;
+  if (has_gravity()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->gravity(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -515,6 +540,11 @@ void YavieParameter::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         4, this->sp(), target);
+  }
+
+  // required double gravity = 5;
+  if (has_gravity()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->gravity(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -557,6 +587,11 @@ int YavieParameter::ByteSize() const {
           this->sp());
     }
 
+    // required double gravity = 5;
+    if (has_gravity()) {
+      total_size += 1 + 8;
+    }
+
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -596,6 +631,9 @@ void YavieParameter::MergeFrom(const YavieParameter& from) {
     if (from.has_sp()) {
       mutable_sp()->::hityavie::SfmParam::MergeFrom(from.sp());
     }
+    if (from.has_gravity()) {
+      set_gravity(from.gravity());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -613,7 +651,7 @@ void YavieParameter::CopyFrom(const YavieParameter& from) {
 }
 
 bool YavieParameter::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
 
   if (has_cam()) {
     if (!this->cam().IsInitialized()) return false;
@@ -636,6 +674,7 @@ void YavieParameter::Swap(YavieParameter* other) {
     std::swap(np_, other->np_);
     std::swap(tp_, other->tp_);
     std::swap(sp_, other->sp_);
+    std::swap(gravity_, other->gravity_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

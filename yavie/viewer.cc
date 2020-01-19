@@ -1,4 +1,4 @@
-#include "sfm/viewer.h"
+#include "yavie/viewer.h"
 #include "common/adapter.h"
 
 namespace hityavie {
@@ -10,8 +10,9 @@ namespace hityavie {
 #define GL_COLOR_WHITE      (glColor3f(1, 1, 1))
 #define GL_COLOR_LGREEN     (glColor3f(0.125, 0.698, 0.667))
 
-void Viewer::InitViewer(const Map::Ptr &map) {
+void Viewer::InitViewer(const YavieMap::Ptr &map, const BaseCamera::Ptr cam) {
     map_ = map;
+    cam_ = cam;
     vt_ = std::thread(std::bind(&Viewer::Show, this));
 }
 
@@ -38,7 +39,7 @@ void Viewer::Show() {
 }
 
 void Viewer::DrawPoint() {
-    std::vector<Point::Ptr> all_pts = map_->GetAllPoints();
+    std::vector<YaviePoint::Ptr> all_pts = map_->GetAllPoints();
     glBegin(GL_POINTS);
     GL_COLOR_PURPLE;
     for (size_t idx = 0; idx < all_pts.size(); ++idx) {
@@ -49,15 +50,15 @@ void Viewer::DrawPoint() {
 }
 
 void Viewer::DrawCamera() {
-    std::vector<Frame::Ptr> all_frms = map_->GetAllFrames();
+    std::vector<YavieFrame::Ptr> all_frms = map_->GetAllFrames();
     for (const auto &frm : all_frms) {
-        pangolin::OpenGlMatrix twc = Adapter::EigenMat2Pangolin(frm->GetPose().inverse());
+        pangolin::OpenGlMatrix twc = Adapter::EigenMat2Pangolin(frm->GetPose() * cam_->GetTfic());
         glPushMatrix();
         glMultMatrixd(twc.m);
         glLineWidth(2);
-        const float &w = 1.2;
-        const float h = w * 0.75;
-        const float z = w * 0.6;
+        float w = 0.05;
+        float h = w * 0.75;
+        float z = w * 0.6;
         GL_COLOR_GREEN;
         glBegin(GL_LINES);
         glVertex3f(0, 0, 0);
@@ -72,6 +73,8 @@ void Viewer::DrawCamera() {
         glVertex3f(w, -h, z);
         glVertex3f(-w, h, z);
         glVertex3f(w, h, z);
+        glVertex3f(-w, -h, z);
+        glVertex3f(-w, h, z);
         glVertex3f(-w, -h, z);
         glVertex3f(w, -h, z);
         glEnd();

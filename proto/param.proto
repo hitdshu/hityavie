@@ -7,6 +7,7 @@ message YavieParameter {
     required ImuNoiseParameter np = 2;
     required TrackerParam tp = 3;
     required SfmParam sp = 4;
+    required double gravity = 5;
 }
 
 message ImuNoiseParameter {

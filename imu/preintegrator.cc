@@ -126,4 +126,16 @@ Eigen::Vector3d Preintegrator::GetBg() const {
     return bg_;
 }
 
+Eigen::Matrix<double, 15, 15> Preintegrator::GetJacobian() const {
+    return jacob_;
+}
+
+double Preintegrator::GetDt() const {
+    double total_dt = 0;
+    for (const auto &dt : dt_buf_) {
+        total_dt += dt;
+    }
+    return total_dt;
+}
+
 } // namespace hityavie

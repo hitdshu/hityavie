@@ -15,6 +15,7 @@ public:
 
     void AddPoint(const Point::Ptr &pt);
     void AddFrame(const Frame::Ptr &frm);
+    void Scale(double scale);
 
     std::vector<Point::Ptr> GetAllPoints() const;
     std::vector<Frame::Ptr> GetAllFrames() const;

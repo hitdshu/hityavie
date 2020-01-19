@@ -132,6 +132,13 @@ class YavieParameter : public ::google::protobuf::Message {
   inline ::hityavie::SfmParam* release_sp();
   inline void set_allocated_sp(::hityavie::SfmParam* sp);
 
+  // required double gravity = 5;
+  inline bool has_gravity() const;
+  inline void clear_gravity();
+  static const int kGravityFieldNumber = 5;
+  inline double gravity() const;
+  inline void set_gravity(double value);
+
   // @@protoc_insertion_point(class_scope:hityavie.YavieParameter)
  private:
   inline void set_has_cam();
@@ -142,6 +149,8 @@ class YavieParameter : public ::google::protobuf::Message {
   inline void clear_has_tp();
   inline void set_has_sp();
   inline void clear_has_sp();
+  inline void set_has_gravity();
+  inline void clear_has_gravity();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -151,6 +160,7 @@ class YavieParameter : public ::google::protobuf::Message {
   ::hityavie::ImuNoiseParameter* np_;
   ::hityavie::TrackerParam* tp_;
   ::hityavie::SfmParam* sp_;
+  double gravity_;
   friend void  protobuf_AddDesc_param_2eproto();
   friend void protobuf_AssignDesc_param_2eproto();
   friend void protobuf_ShutdownFile_param_2eproto();
@@ -1001,6 +1011,30 @@ inline void YavieParameter::set_allocated_sp(::hityavie::SfmParam* sp) {
     clear_has_sp();
   }
   // @@protoc_insertion_point(field_set_allocated:hityavie.YavieParameter.sp)
+}
+
+// required double gravity = 5;
+inline bool YavieParameter::has_gravity() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void YavieParameter::set_has_gravity() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void YavieParameter::clear_has_gravity() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void YavieParameter::clear_gravity() {
+  gravity_ = 0;
+  clear_has_gravity();
+}
+inline double YavieParameter::gravity() const {
+  // @@protoc_insertion_point(field_get:hityavie.YavieParameter.gravity)
+  return gravity_;
+}
+inline void YavieParameter::set_gravity(double value) {
+  set_has_gravity();
+  gravity_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.YavieParameter.gravity)
 }
 
 // -------------------------------------------------------------------

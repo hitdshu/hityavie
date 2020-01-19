@@ -1,76 +1,79 @@
-#include "sfm/map.h"
+#include "yavie/yavie_map.h"
 
 namespace hityavie {
 
-void Map::AddPoint(const Point::Ptr &pt) {
+void YavieMap::AddPoint(const YaviePoint::Ptr &pt) {
     std::unique_lock<std::mutex> lock(mutex_);
     id_pt_map_[pt->GetId()] = pt;
 }
 
-void Map::AddFrame(const Frame::Ptr &frm) {
+void YavieMap::AddFrame(const YavieFrame::Ptr &frm) {
     std::unique_lock<std::mutex> lock(mutex_);
     id_frm_map_[frm->GetId()] = frm;
 }
 
-void Map::Scale(double scale) {
-    for (auto iter = id_pt_map_.begin(); iter != id_pt_map_.end(); ++iter) {
-        iter->second->SetPosition(iter->second->GetPosition() * scale);
-    }
-    for (auto iter = id_frm_map_.begin(); iter != id_frm_map_.end(); ++iter) {
-        Eigen::Matrix4d tcw = iter->second->GetPose();
-        tcw.block(0, 3, 3, 1) *= scale;
-        iter->second->SetPose(tcw);
+void YavieMap::RmPoint(int id) {
+    auto iter = id_pt_map_.find(id);
+    if (iter != id_pt_map_.end()) {
+        id_pt_map_.erase(iter);
     }
 }
 
-std::vector<Point::Ptr> Map::GetAllPoints() const {
-    std::vector<Point::Ptr> all_pts;
+void YavieMap::RmFrame(int id) {
+    auto iter = id_frm_map_.find(id);
+    if (iter != id_frm_map_.end()) {
+        id_frm_map_.erase(iter);
+    }
+}
+
+std::vector<YaviePoint::Ptr> YavieMap::GetAllPoints() const {
+    std::vector<YaviePoint::Ptr> all_pts;
     for (auto iter = id_pt_map_.begin(); iter != id_pt_map_.end(); ++iter) {
         all_pts.push_back(iter->second);
     }
     return all_pts;
 }
 
-std::vector<Frame::Ptr> Map::GetAllFrames() const {
-    std::vector<Frame::Ptr> all_frms;
+std::vector<YavieFrame::Ptr> YavieMap::GetAllFrames() const {
+    std::vector<YavieFrame::Ptr> all_frms;
     for (auto iter = id_frm_map_.begin(); iter != id_frm_map_.end(); ++iter) {
         all_frms.push_back(iter->second);
     }
     return all_frms;
 }
 
-Point::Ptr Map::GetPoint(int pid) const {
+YaviePoint::Ptr YavieMap::GetPoint(int pid) const {
     auto iter = id_pt_map_.find(pid);
     if (iter != id_pt_map_.end()) {
         return iter->second;
     } else {
-        return Point::Ptr();
+        return YaviePoint::Ptr();
     }
 }
 
-Frame::Ptr Map::GetFrame(int fid) const {
+YavieFrame::Ptr YavieMap::GetFrame(int fid) const {
     auto iter = id_frm_map_.find(fid);
     if (iter != id_frm_map_.end()) {
         return iter->second;
     } else {
-        return Frame::Ptr();
+        return YavieFrame::Ptr();
     }
 }
 
-Frame::Ptr Map::GetLastFrame() const {
+YavieFrame::Ptr YavieMap::GetLastFrame() const {
     auto iter = id_frm_map_.end();
     return (--iter)->second;
 }
 
-int Map::GetFrameCnt() const {
+int YavieMap::GetFrameCnt() const {
     return id_frm_map_.size();
 }
 
-int Map::GetPointCnt() const {
+int YavieMap::GetPointCnt() const {
     return id_pt_map_.size();
 }
 
-bool Map::HasPoint(int pid) const {
+bool YavieMap::HasPoint(int pid) const {
     auto iter = id_pt_map_.find(pid);
     if (iter != id_pt_map_.end()) {
         return true;
@@ -79,7 +82,7 @@ bool Map::HasPoint(int pid) const {
     }
 }
 
-bool Map::HasFrame(int fid) const {
+bool YavieMap::HasFrame(int fid) const {
     auto iter = id_frm_map_.find(fid);
     if (iter != id_frm_map_.end()) {
         return true;

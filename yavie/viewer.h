@@ -2,7 +2,8 @@
 
 #include <thread>
 #include <pangolin/pangolin.h>
-#include "sfm/map.h"
+#include "yavie/yavie_map.h"
+#include "camera/camera_base.h"
 
 namespace hityavie {
 
@@ -13,7 +14,7 @@ public:
     Viewer() = default;
     ~Viewer() = default;
 
-    void InitViewer(const Map::Ptr &map);
+    void InitViewer(const YavieMap::Ptr &map, const BaseCamera::Ptr cam);
     void Show();
 
 protected:
@@ -21,7 +22,8 @@ protected:
     void DrawCamera();
 
 private:
-    Map::Ptr map_;
+    YavieMap::Ptr map_;
+    BaseCamera::Ptr cam_;
     std::thread vt_;
 };
 

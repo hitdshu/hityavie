@@ -25,6 +25,8 @@ public:
     Eigen::Quaterniond GetQ() const;
     Eigen::Vector3d GetBa() const;
     Eigen::Vector3d GetBg() const;
+    Eigen::Matrix<double, 15, 15> GetJacobian() const;
+    double GetDt() const;
 
     Preintegrator(const Preintegrator &) = delete;
     Preintegrator &operator=(const Preintegrator &) = delete;

@@ -28,7 +28,7 @@ bool RotationCalib::Calibrate(const Eigen::Matrix3d &rcpcc, const Eigen::Matrix3
     Eigen::Vector4d v = svd.matrixV().col(3);
     Eigen::Matrix3d rbc = Adapter::Quat2Rot(v);
     rbc_ = rbc;
-    if (svd.singularValues()[3] > 0.15) {
+    if (svd.singularValues()[2] > 0.05) {
         calib_done_ = true;
     }
     return calib_done_;
