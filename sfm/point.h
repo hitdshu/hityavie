@@ -5,7 +5,7 @@
 #include <vector>
 #include <set>
 #include <Eigen/Dense>
-#include "map/frame.h"
+#include "sfm/frame.h"
 
 namespace hityavie {
 

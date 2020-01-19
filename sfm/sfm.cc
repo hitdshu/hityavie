@@ -1,5 +1,5 @@
 #include <set>
-#include "map/sfm.h"
+#include "sfm/sfm.h"
 #include "common/adapter.h"
 #include "common/geometry_utility.h"
 #include "optim/error_prj.h"
@@ -7,30 +7,33 @@
 
 namespace hityavie {
 
-Sfm::Sfm(const Map::Ptr &map, const BaseCamera::Ptr &cam, const SfmParam &sp) {
-    map_ = map;
+Sfm::Sfm(const BaseCamera::Ptr &cam, const SfmParam &sp) {
+    map_.reset(new Map());
     cam_ = cam;
-    initer_.reset(new Initializer(cam, map));
-    state_ = kSfmEmpty;
+    initer_.reset(new Initializer(cam, map_));
+    state_ = kSfmInit;
     sp_ = sp;
 }
 
 void Sfm::PushFrame(Frame::Ptr &frm) {
-    if (kSfmEmpty == state_) {
+    if (kSfmInit == state_) {
         bool flag = initer_->Initialize(frm);
         if (flag) {
-            state_ = kSfmInited;
+            state_ = kSfmTracking;
             std::vector<Frame::Ptr> frms = map_->GetAllFrames();
             twcp_ = frms[1]->GetPose().inverse();
             tcpcc_ = frms[0]->GetPose() * frms[1]->GetPose().inverse();
         }
         return;
-    } else if (kSfmInited == state_) {
+    } else if (kSfmTracking == state_) {
         frm->SetPose(twcp_.inverse());
         Frame::Ptr last_frm = map_->GetLastFrame();
         SolvePnp(last_frm, frm);
         if (frm->GetEffObsNum() < sp_.min_eff_obs_num() || (frm->GetId() - last_frm->GetId()) >= sp_.max_frm_interval()) {
             AddKeyFrame(last_frm, frm);
+        }
+        if (frm->GetEffObsNum() < sp_.min_tracking_feat_num()) {
+            state_ = kSfmLost;
         }
         twcp_ = frm->GetPose().inverse();
         tcpcc_ = last_frm->GetPose() * frm->GetPose().inverse();

@@ -2,24 +2,24 @@
 
 #include <memory>
 #include <set>
-#include "map/map.h"
-#include "map/initializer.h"
+#include "sfm/map.h"
+#include "sfm/initializer.h"
 #include "camera/camera_base.h"
 #include "proto/param.pb.h"
 
 namespace hityavie {
 
 enum SfmState {
-    kSfmEmpty = 0,
-    kSfmInited = 1,
-    kSfmDone = 2
+    kSfmInit = 0,
+    kSfmTracking = 1,
+    kSfmLost = 2
 };
 
 class Sfm {
 public:
     typedef std::shared_ptr<Sfm> Ptr;
 
-    Sfm(const Map::Ptr &map, const BaseCamera::Ptr &cam, const SfmParam &sp);
+    Sfm(const BaseCamera::Ptr &cam, const SfmParam &sp);
     ~Sfm() = default;
 
     void PushFrame(Frame::Ptr &frm);
@@ -27,6 +27,9 @@ public:
     Eigen::Matrix4d GetRelativePose() const;
     SfmState GetState() const {
         return state_;
+    }
+    Map::Ptr GetMap() const {
+        return map_;
     }
 
     Sfm(const Sfm &) = delete;

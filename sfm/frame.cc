@@ -1,4 +1,4 @@
-#include "map/frame.h"
+#include "sfm/frame.h"
 
 namespace hityavie {
 

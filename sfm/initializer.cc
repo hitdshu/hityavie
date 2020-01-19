@@ -1,4 +1,4 @@
-#include "map/initializer.h"
+#include "sfm/initializer.h"
 #include "common/adapter.h"
 #include "common/geometry_utility.h"
 

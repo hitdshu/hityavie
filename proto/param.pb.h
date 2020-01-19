@@ -778,53 +778,53 @@ class SfmParam : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // required int32 min_frm_num = 1;
-  inline bool has_min_frm_num() const;
-  inline void clear_min_frm_num();
-  static const int kMinFrmNumFieldNumber = 1;
-  inline ::google::protobuf::int32 min_frm_num() const;
-  inline void set_min_frm_num(::google::protobuf::int32 value);
-
-  // required int32 min_eff_obs_num = 2;
+  // required int32 min_eff_obs_num = 1;
   inline bool has_min_eff_obs_num() const;
   inline void clear_min_eff_obs_num();
-  static const int kMinEffObsNumFieldNumber = 2;
+  static const int kMinEffObsNumFieldNumber = 1;
   inline ::google::protobuf::int32 min_eff_obs_num() const;
   inline void set_min_eff_obs_num(::google::protobuf::int32 value);
 
-  // required int32 max_frm_interval = 3;
+  // required int32 max_frm_interval = 2;
   inline bool has_max_frm_interval() const;
   inline void clear_max_frm_interval();
-  static const int kMaxFrmIntervalFieldNumber = 3;
+  static const int kMaxFrmIntervalFieldNumber = 2;
   inline ::google::protobuf::int32 max_frm_interval() const;
   inline void set_max_frm_interval(::google::protobuf::int32 value);
 
-  // required int32 local_win_size = 4;
+  // required int32 local_win_size = 3;
   inline bool has_local_win_size() const;
   inline void clear_local_win_size();
-  static const int kLocalWinSizeFieldNumber = 4;
+  static const int kLocalWinSizeFieldNumber = 3;
   inline ::google::protobuf::int32 local_win_size() const;
   inline void set_local_win_size(::google::protobuf::int32 value);
 
+  // required int32 min_tracking_feat_num = 4;
+  inline bool has_min_tracking_feat_num() const;
+  inline void clear_min_tracking_feat_num();
+  static const int kMinTrackingFeatNumFieldNumber = 4;
+  inline ::google::protobuf::int32 min_tracking_feat_num() const;
+  inline void set_min_tracking_feat_num(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:hityavie.SfmParam)
  private:
-  inline void set_has_min_frm_num();
-  inline void clear_has_min_frm_num();
   inline void set_has_min_eff_obs_num();
   inline void clear_has_min_eff_obs_num();
   inline void set_has_max_frm_interval();
   inline void clear_has_max_frm_interval();
   inline void set_has_local_win_size();
   inline void clear_has_local_win_size();
+  inline void set_has_min_tracking_feat_num();
+  inline void clear_has_min_tracking_feat_num();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::google::protobuf::uint32 _has_bits_[1];
   mutable int _cached_size_;
-  ::google::protobuf::int32 min_frm_num_;
   ::google::protobuf::int32 min_eff_obs_num_;
   ::google::protobuf::int32 max_frm_interval_;
   ::google::protobuf::int32 local_win_size_;
+  ::google::protobuf::int32 min_tracking_feat_num_;
   friend void  protobuf_AddDesc_param_2eproto();
   friend void protobuf_AssignDesc_param_2eproto();
   friend void protobuf_ShutdownFile_param_2eproto();
@@ -1657,39 +1657,15 @@ inline void OpticalflowTrackerParam::set_bd_thre(double value) {
 
 // SfmParam
 
-// required int32 min_frm_num = 1;
-inline bool SfmParam::has_min_frm_num() const {
+// required int32 min_eff_obs_num = 1;
+inline bool SfmParam::has_min_eff_obs_num() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void SfmParam::set_has_min_frm_num() {
+inline void SfmParam::set_has_min_eff_obs_num() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void SfmParam::clear_has_min_frm_num() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void SfmParam::clear_min_frm_num() {
-  min_frm_num_ = 0;
-  clear_has_min_frm_num();
-}
-inline ::google::protobuf::int32 SfmParam::min_frm_num() const {
-  // @@protoc_insertion_point(field_get:hityavie.SfmParam.min_frm_num)
-  return min_frm_num_;
-}
-inline void SfmParam::set_min_frm_num(::google::protobuf::int32 value) {
-  set_has_min_frm_num();
-  min_frm_num_ = value;
-  // @@protoc_insertion_point(field_set:hityavie.SfmParam.min_frm_num)
-}
-
-// required int32 min_eff_obs_num = 2;
-inline bool SfmParam::has_min_eff_obs_num() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void SfmParam::set_has_min_eff_obs_num() {
-  _has_bits_[0] |= 0x00000002u;
-}
 inline void SfmParam::clear_has_min_eff_obs_num() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000001u;
 }
 inline void SfmParam::clear_min_eff_obs_num() {
   min_eff_obs_num_ = 0;
@@ -1705,15 +1681,15 @@ inline void SfmParam::set_min_eff_obs_num(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:hityavie.SfmParam.min_eff_obs_num)
 }
 
-// required int32 max_frm_interval = 3;
+// required int32 max_frm_interval = 2;
 inline bool SfmParam::has_max_frm_interval() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000002u) != 0;
 }
 inline void SfmParam::set_has_max_frm_interval() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000002u;
 }
 inline void SfmParam::clear_has_max_frm_interval() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void SfmParam::clear_max_frm_interval() {
   max_frm_interval_ = 0;
@@ -1729,15 +1705,15 @@ inline void SfmParam::set_max_frm_interval(::google::protobuf::int32 value) {
   // @@protoc_insertion_point(field_set:hityavie.SfmParam.max_frm_interval)
 }
 
-// required int32 local_win_size = 4;
+// required int32 local_win_size = 3;
 inline bool SfmParam::has_local_win_size() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void SfmParam::set_has_local_win_size() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void SfmParam::clear_has_local_win_size() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void SfmParam::clear_local_win_size() {
   local_win_size_ = 0;
@@ -1751,6 +1727,30 @@ inline void SfmParam::set_local_win_size(::google::protobuf::int32 value) {
   set_has_local_win_size();
   local_win_size_ = value;
   // @@protoc_insertion_point(field_set:hityavie.SfmParam.local_win_size)
+}
+
+// required int32 min_tracking_feat_num = 4;
+inline bool SfmParam::has_min_tracking_feat_num() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void SfmParam::set_has_min_tracking_feat_num() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void SfmParam::clear_has_min_tracking_feat_num() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void SfmParam::clear_min_tracking_feat_num() {
+  min_tracking_feat_num_ = 0;
+  clear_has_min_tracking_feat_num();
+}
+inline ::google::protobuf::int32 SfmParam::min_tracking_feat_num() const {
+  // @@protoc_insertion_point(field_get:hityavie.SfmParam.min_tracking_feat_num)
+  return min_tracking_feat_num_;
+}
+inline void SfmParam::set_min_tracking_feat_num(::google::protobuf::int32 value) {
+  set_has_min_tracking_feat_num();
+  min_tracking_feat_num_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.SfmParam.min_tracking_feat_num)
 }
 
 

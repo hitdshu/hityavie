@@ -2,7 +2,7 @@
 
 #include <thread>
 #include <pangolin/pangolin.h>
-#include "map/map.h"
+#include "sfm/map.h"
 
 namespace hityavie {
 

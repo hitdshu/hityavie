@@ -1,4 +1,4 @@
-#include "map/point.h"
+#include "sfm/point.h"
 
 namespace hityavie {
 

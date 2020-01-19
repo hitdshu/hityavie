@@ -1,4 +1,4 @@
-#include "map/map.h"
+#include "sfm/map.h"
 
 namespace hityavie {
 

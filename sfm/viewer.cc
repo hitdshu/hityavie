@@ -1,4 +1,4 @@
-#include "map/viewer.h"
+#include "sfm/viewer.h"
 #include "common/adapter.h"
 
 namespace hityavie {

@@ -161,10 +161,10 @@ void protobuf_AssignDesc_param_2eproto() {
       sizeof(OpticalflowTrackerParam));
   SfmParam_descriptor_ = file->message_type(6);
   static const int SfmParam_offsets_[4] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, min_frm_num_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, min_eff_obs_num_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, max_frm_interval_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, local_win_size_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SfmParam, min_tracking_feat_num_),
   };
   SfmParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -248,9 +248,9 @@ void protobuf_AddDesc_param_2eproto() {
     "lowTrackerParam\"i\n\027OpticalflowTrackerPar"
     "am\022\024\n\014min_feat_num\030\001 \002(\005\022\025\n\rnms_dist_thr"
     "e\030\002 \002(\001\022\020\n\010det_thre\030\003 \002(\005\022\017\n\007bd_thre\030\004 \002"
-    "(\001\"j\n\010SfmParam\022\023\n\013min_frm_num\030\001 \002(\005\022\027\n\017m"
-    "in_eff_obs_num\030\002 \002(\005\022\030\n\020max_frm_interval"
-    "\030\003 \002(\005\022\026\n\016local_win_size\030\004 \002(\005", 790);
+    "(\001\"t\n\010SfmParam\022\027\n\017min_eff_obs_num\030\001 \002(\005\022"
+    "\030\n\020max_frm_interval\030\002 \002(\005\022\026\n\016local_win_s"
+    "ize\030\003 \002(\005\022\035\n\025min_tracking_feat_num\030\004 \002(\005", 800);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "param.proto", &protobuf_RegisterTypes);
   YavieParameter::default_instance_ = new YavieParameter();
@@ -2436,10 +2436,10 @@ void OpticalflowTrackerParam::Swap(OpticalflowTrackerParam* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int SfmParam::kMinFrmNumFieldNumber;
 const int SfmParam::kMinEffObsNumFieldNumber;
 const int SfmParam::kMaxFrmIntervalFieldNumber;
 const int SfmParam::kLocalWinSizeFieldNumber;
+const int SfmParam::kMinTrackingFeatNumFieldNumber;
 #endif  // !_MSC_VER
 
 SfmParam::SfmParam()
@@ -2460,10 +2460,10 @@ SfmParam::SfmParam(const SfmParam& from)
 
 void SfmParam::SharedCtor() {
   _cached_size_ = 0;
-  min_frm_num_ = 0;
   min_eff_obs_num_ = 0;
   max_frm_interval_ = 0;
   local_win_size_ = 0;
+  min_tracking_feat_num_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2509,7 +2509,7 @@ void SfmParam::Clear() {
     ::memset(&first, 0, n);                                \
   } while (0)
 
-  ZR_(min_frm_num_, local_win_size_);
+  ZR_(min_eff_obs_num_, min_tracking_feat_num_);
 
 #undef OFFSET_OF_FIELD_
 #undef ZR_
@@ -2528,24 +2528,9 @@ bool SfmParam::MergePartialFromCodedStream(
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required int32 min_frm_num = 1;
+      // required int32 min_eff_obs_num = 1;
       case 1: {
         if (tag == 8) {
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &min_frm_num_)));
-          set_has_min_frm_num();
-        } else {
-          goto handle_unusual;
-        }
-        if (input->ExpectTag(16)) goto parse_min_eff_obs_num;
-        break;
-      }
-
-      // required int32 min_eff_obs_num = 2;
-      case 2: {
-        if (tag == 16) {
-         parse_min_eff_obs_num:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &min_eff_obs_num_)));
@@ -2553,13 +2538,13 @@ bool SfmParam::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(24)) goto parse_max_frm_interval;
+        if (input->ExpectTag(16)) goto parse_max_frm_interval;
         break;
       }
 
-      // required int32 max_frm_interval = 3;
-      case 3: {
-        if (tag == 24) {
+      // required int32 max_frm_interval = 2;
+      case 2: {
+        if (tag == 16) {
          parse_max_frm_interval:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
@@ -2568,18 +2553,33 @@ bool SfmParam::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
-        if (input->ExpectTag(32)) goto parse_local_win_size;
+        if (input->ExpectTag(24)) goto parse_local_win_size;
         break;
       }
 
-      // required int32 local_win_size = 4;
-      case 4: {
-        if (tag == 32) {
+      // required int32 local_win_size = 3;
+      case 3: {
+        if (tag == 24) {
          parse_local_win_size:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
                  input, &local_win_size_)));
           set_has_local_win_size();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(32)) goto parse_min_tracking_feat_num;
+        break;
+      }
+
+      // required int32 min_tracking_feat_num = 4;
+      case 4: {
+        if (tag == 32) {
+         parse_min_tracking_feat_num:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &min_tracking_feat_num_)));
+          set_has_min_tracking_feat_num();
         } else {
           goto handle_unusual;
         }
@@ -2612,24 +2612,24 @@ failure:
 void SfmParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // @@protoc_insertion_point(serialize_start:hityavie.SfmParam)
-  // required int32 min_frm_num = 1;
-  if (has_min_frm_num()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->min_frm_num(), output);
-  }
-
-  // required int32 min_eff_obs_num = 2;
+  // required int32 min_eff_obs_num = 1;
   if (has_min_eff_obs_num()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->min_eff_obs_num(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(1, this->min_eff_obs_num(), output);
   }
 
-  // required int32 max_frm_interval = 3;
+  // required int32 max_frm_interval = 2;
   if (has_max_frm_interval()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->max_frm_interval(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->max_frm_interval(), output);
   }
 
-  // required int32 local_win_size = 4;
+  // required int32 local_win_size = 3;
   if (has_local_win_size()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->local_win_size(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->local_win_size(), output);
+  }
+
+  // required int32 min_tracking_feat_num = 4;
+  if (has_min_tracking_feat_num()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->min_tracking_feat_num(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -2642,24 +2642,24 @@ void SfmParam::SerializeWithCachedSizes(
 ::google::protobuf::uint8* SfmParam::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // @@protoc_insertion_point(serialize_to_array_start:hityavie.SfmParam)
-  // required int32 min_frm_num = 1;
-  if (has_min_frm_num()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->min_frm_num(), target);
-  }
-
-  // required int32 min_eff_obs_num = 2;
+  // required int32 min_eff_obs_num = 1;
   if (has_min_eff_obs_num()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->min_eff_obs_num(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(1, this->min_eff_obs_num(), target);
   }
 
-  // required int32 max_frm_interval = 3;
+  // required int32 max_frm_interval = 2;
   if (has_max_frm_interval()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->max_frm_interval(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->max_frm_interval(), target);
   }
 
-  // required int32 local_win_size = 4;
+  // required int32 local_win_size = 3;
   if (has_local_win_size()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->local_win_size(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->local_win_size(), target);
+  }
+
+  // required int32 min_tracking_feat_num = 4;
+  if (has_min_tracking_feat_num()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->min_tracking_feat_num(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -2674,32 +2674,32 @@ int SfmParam::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required int32 min_frm_num = 1;
-    if (has_min_frm_num()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->min_frm_num());
-    }
-
-    // required int32 min_eff_obs_num = 2;
+    // required int32 min_eff_obs_num = 1;
     if (has_min_eff_obs_num()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->min_eff_obs_num());
     }
 
-    // required int32 max_frm_interval = 3;
+    // required int32 max_frm_interval = 2;
     if (has_max_frm_interval()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->max_frm_interval());
     }
 
-    // required int32 local_win_size = 4;
+    // required int32 local_win_size = 3;
     if (has_local_win_size()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->local_win_size());
+    }
+
+    // required int32 min_tracking_feat_num = 4;
+    if (has_min_tracking_feat_num()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->min_tracking_feat_num());
     }
 
   }
@@ -2729,9 +2729,6 @@ void SfmParam::MergeFrom(const ::google::protobuf::Message& from) {
 void SfmParam::MergeFrom(const SfmParam& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_min_frm_num()) {
-      set_min_frm_num(from.min_frm_num());
-    }
     if (from.has_min_eff_obs_num()) {
       set_min_eff_obs_num(from.min_eff_obs_num());
     }
@@ -2740,6 +2737,9 @@ void SfmParam::MergeFrom(const SfmParam& from) {
     }
     if (from.has_local_win_size()) {
       set_local_win_size(from.local_win_size());
+    }
+    if (from.has_min_tracking_feat_num()) {
+      set_min_tracking_feat_num(from.min_tracking_feat_num());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -2765,10 +2765,10 @@ bool SfmParam::IsInitialized() const {
 
 void SfmParam::Swap(SfmParam* other) {
   if (other != this) {
-    std::swap(min_frm_num_, other->min_frm_num_);
     std::swap(min_eff_obs_num_, other->min_eff_obs_num_);
     std::swap(max_frm_interval_, other->max_frm_interval_);
     std::swap(local_win_size_, other->local_win_size_);
+    std::swap(min_tracking_feat_num_, other->min_tracking_feat_num_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

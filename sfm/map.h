@@ -1,8 +1,8 @@
 #pragma once
 
 #include <mutex>
-#include "map/point.h"
-#include "map/frame.h"
+#include "sfm/point.h"
+#include "sfm/frame.h"
 
 namespace hityavie {
 

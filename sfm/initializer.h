@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include "map/frame.h"
-#include "map/map.h"
+#include "sfm/frame.h"
+#include "sfm/map.h"
 #include "camera/camera_base.h"
 
 namespace hityavie {

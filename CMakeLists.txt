@@ -24,7 +24,7 @@ exec_program(protoc ARGS "--cpp_out=${PROJECT_SOURCE_DIR}/proto/ --proto_path=${
 file(GLOB CAMERA_CC "${PROJECT_SOURCE_DIR}/camera/*.cc")
 file(GLOB COMMON_CC "${PROJECT_SOURCE_DIR}/common/*.cc")
 file(GLOB IMU_CC "${PROJECT_SOURCE_DIR}/imu/*.cc")
-file(GLOB MAP_CC "${PROJECT_SOURCE_DIR}/map/*.cc")
+file(GLOB SFM_CC "${PROJECT_SOURCE_DIR}/sfm/*.cc")
 file(GLOB PROTO_CC "${PROJECT_SOURCE_DIR}/proto/*.cc")
 file(GLOB TRACKER_CC "${PROJECT_SOURCE_DIR}/tracker/*.cc")
 file(GLOB YAVIE_CC "${PROJECT_SOURCE_DIR}/yavie/*.cc")
@@ -33,7 +33,7 @@ add_library(${PROJECT_NAME} SHARED
 ${CAMERA_CC}
 ${COMMON_CC}
 ${IMU_CC}
-${MAP_CC}
+${SFM_CC}
 ${PROTO_CC}
 ${TRACKER_CC}
 ${YAVIE_CC}

@@ -45,8 +45,8 @@ message OpticalflowTrackerParam {
 }
 
 message SfmParam {
-    required int32 min_frm_num = 1;
-    required int32 min_eff_obs_num = 2;
-    required int32 max_frm_interval = 3;
-    required int32 local_win_size = 4;
+    required int32 min_eff_obs_num = 1;
+    required int32 max_frm_interval = 2;
+    required int32 local_win_size = 3;
+    required int32 min_tracking_feat_num = 4;
 }

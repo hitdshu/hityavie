@@ -7,11 +7,10 @@
 #include "camera/camera_base.h"
 #include "common/geometry_utility.h"
 #include "common/timer.h"
-#include "map/frame.h"
-#include "map/point.h"
-#include "map/map.h"
-#include "map/sfm.h"
-#include "map/viewer.h"
+#include "sfm/frame.h"
+#include "sfm/point.h"
+#include "sfm/sfm.h"
+#include "sfm/viewer.h"
 #include "imu/preintegrator.h"
 #include "yavie/rotation_calib.h"
 
@@ -38,11 +37,10 @@ int main(int argc, char **argv) {
     BaseTracker::Ptr tracker;
     tracker.reset(BaseTrackerRegisterer::GetInstanceByName(param.tp().type()));
     tracker->Init(param.tp(), cam);
-    Map::Ptr map(new Map());
-    Sfm::Ptr sfm(new Sfm(map, cam, param.sp()));
+    Sfm::Ptr sfm(new Sfm(cam, param.sp()));
     RotationCalib::Ptr calib(new RotationCalib());
     // Viewer::Ptr viewer(new Viewer());
-    // viewer->InitViewer(map);
+    // viewer->InitViewer(sfm->GetMap());
     Eigen::Vector3d gravity;
     gravity << 0, 0, 9.81;
     Timer timer;
@@ -67,7 +65,7 @@ int main(int argc, char **argv) {
         sfm->PushFrame(nf);
         timer.Toc("sfm");
         timer.Tic();
-        if (sfm->GetState() != kSfmEmpty && !calib->IsDone()) {
+        if (sfm->GetState() != kSfmTracking && !calib->IsDone()) {
             Preintegrator::Ptr pitor(new Preintegrator());
             std::vector<ImuData> imu_data = imu_reader.GetImuDataBetweenImages(last_img_timestamp, img_timestamp);
             Eigen::Vector3d acc_init = imu_data[0].lin_acc;
@@ -99,7 +97,7 @@ int main(int argc, char **argv) {
         Drawer::DrawPts(img, kpts_new, true, cv::Scalar(0, 0, 255));
         Drawer::DrawPtsTraj(img, pts_prev, pts_cur, cv::Scalar(0, 255, 0));
         cv::imshow("img", img);
-        cv::waitKey(0);
+        cv::waitKey(1);
         last_img_timestamp = img_timestamp;
     }
 
