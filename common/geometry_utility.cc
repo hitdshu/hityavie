@@ -77,4 +77,25 @@ Eigen::Matrix4d GeometryUtility::QuatRmat(const Eigen::Quaterniond &quat) {
     return QuatRmat(quatv);
 }
 
+Eigen::Matrix<double, 7, 1> GeometryUtility::Pose2Vec(const Eigen::Matrix4d &pose) {
+    Eigen::Matrix3d rot = pose.block(0, 0, 3, 3);
+    Eigen::Quaterniond quat(rot);
+    Eigen::Vector4d qv;
+    qv << quat.x(), quat.y(), quat.z(), quat.w();
+    Eigen::Matrix<double, 7, 1> result;
+    result.block(0, 0, 3, 1) = pose.block(0, 3, 3, 1);
+    result.block(3, 0, 4, 1) = qv;
+    return result;
+}
+
+Eigen::Matrix4d GeometryUtility::Vec2Pose(const Eigen::Matrix<double, 7, 1> &vec) {
+    Eigen::Vector3d t = vec.block(0, 0, 3, 1);
+    Eigen::Quaterniond r(vec[6], vec[3], vec[4], vec[5]);
+    Eigen::Matrix4d result;
+    result.setIdentity();
+    result.block(0, 0, 3, 3) = r.toRotationMatrix();
+    result.block(0, 3, 3, 1) = t;
+    return result;
+}
+
 } // namespace hityaview

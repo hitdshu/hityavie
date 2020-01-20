@@ -31,19 +31,19 @@ int main(int argc, char **argv) {
     for (auto iter = all_imu_data.begin(); iter != all_imu_data.end(); ++iter) {
         estimator->ProcessImu(iter->second.timestamp, iter->second.lin_acc, iter->second.ang_vel);
     }
+    Timer timer;
 
     for (int img_idx = start_idx; img_idx <= end_idx; ++img_idx) {
         std::cout << "Img idx " << img_idx << std::endl;
         double img_timestamp = img_reader.GetTimestamp4Id(img_idx);
         cv::Mat img = img_reader.GetImg4Id(img_idx);
+        timer.Tic();
         estimator->ProcessImg(img_timestamp, img);
+        timer.Toc("one frame estimation");
+        cv::waitKey(40);
         std::cout << "Yavie estimator state: " << estimator->GetState() << std::endl;
-        if (estimator->GetState() == kYavieTracking) {
-            cv::imshow("img", img);
-            cv::waitKey(0);
-        }
     }
 
-
+    viewer->Close();
     return 0;
 }

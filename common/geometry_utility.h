@@ -15,6 +15,8 @@ public:
     static Eigen::Matrix4d QuatLmat(const Eigen::Quaterniond &quat);
     static Eigen::Matrix4d QuatRmat(const Eigen::Vector4d &quat);
     static Eigen::Matrix4d QuatRmat(const Eigen::Quaterniond &quat);
+    static Eigen::Matrix<double, 7, 1> Pose2Vec(const Eigen::Matrix4d &pose);
+    static Eigen::Matrix4d Vec2Pose(const Eigen::Matrix<double, 7, 1> &vec);
     GeometryUtility() = delete;
 };
 

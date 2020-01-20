@@ -56,11 +56,16 @@ public:
 protected:
     void YavieInit(double timestamp, cv::Mat &img);
     void YavieSfm(double timestamp, cv::Mat &img);
+    void YavieTracking(double timestamp, cv::Mat &img);
     void VisualInertialAlign();
     void CalcBg();
     void LinearAlignment();
     Eigen::VectorXd RefineGravity(const Eigen::VectorXd &init_x);
     void VisualInertialInit(const Eigen::VectorXd &x);
+    void SolvPnp(YavieFrame::Ptr &lf, YavieFrame::Ptr &cf);
+    void AddKeyFrame(YavieFrame::Ptr &last_frm, YavieFrame::Ptr &cur_frm);
+    void LocalOptimization();
+    void GlobalOptimization();
 
 private:
     std::vector<YavieImuData> GetImuDataBetweenImages(double timestamp1, double timestamp2) const;
@@ -73,6 +78,10 @@ private:
     std::map<double, YavieImuData> timestamp_imu_map_;
     double last_img_timestamp_;
     YavieImuData last_imu_data_;
+    Eigen::Matrix4d last_twb_;
+    Eigen::Vector3d last_ba_;
+    Eigen::Vector3d last_bg_;
+    Eigen::Vector3d last_v_;
 
     BaseCamera::Ptr cam_;
     BaseTracker::Ptr tracker_;

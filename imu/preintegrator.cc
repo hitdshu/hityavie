@@ -130,6 +130,14 @@ Eigen::Matrix<double, 15, 15> Preintegrator::GetJacobian() const {
     return jacob_;
 }
 
+Eigen::Matrix<double, 15, 15> Preintegrator::GetCovariance() const {
+    return cov_;
+}
+
+Eigen::Vector3d Preintegrator::GetGravity() const {
+    return gravity_;
+}
+
 double Preintegrator::GetDt() const {
     double total_dt = 0;
     for (const auto &dt : dt_buf_) {

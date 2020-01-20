@@ -139,6 +139,27 @@ class YavieParameter : public ::google::protobuf::Message {
   inline double gravity() const;
   inline void set_gravity(double value);
 
+  // required int32 min_eff_obs_num = 6;
+  inline bool has_min_eff_obs_num() const;
+  inline void clear_min_eff_obs_num();
+  static const int kMinEffObsNumFieldNumber = 6;
+  inline ::google::protobuf::int32 min_eff_obs_num() const;
+  inline void set_min_eff_obs_num(::google::protobuf::int32 value);
+
+  // required int32 max_frm_interval = 7;
+  inline bool has_max_frm_interval() const;
+  inline void clear_max_frm_interval();
+  static const int kMaxFrmIntervalFieldNumber = 7;
+  inline ::google::protobuf::int32 max_frm_interval() const;
+  inline void set_max_frm_interval(::google::protobuf::int32 value);
+
+  // required int32 local_win_size = 8;
+  inline bool has_local_win_size() const;
+  inline void clear_local_win_size();
+  static const int kLocalWinSizeFieldNumber = 8;
+  inline ::google::protobuf::int32 local_win_size() const;
+  inline void set_local_win_size(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:hityavie.YavieParameter)
  private:
   inline void set_has_cam();
@@ -151,6 +172,12 @@ class YavieParameter : public ::google::protobuf::Message {
   inline void clear_has_sp();
   inline void set_has_gravity();
   inline void clear_has_gravity();
+  inline void set_has_min_eff_obs_num();
+  inline void clear_has_min_eff_obs_num();
+  inline void set_has_max_frm_interval();
+  inline void clear_has_max_frm_interval();
+  inline void set_has_local_win_size();
+  inline void clear_has_local_win_size();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -161,6 +188,9 @@ class YavieParameter : public ::google::protobuf::Message {
   ::hityavie::TrackerParam* tp_;
   ::hityavie::SfmParam* sp_;
   double gravity_;
+  ::google::protobuf::int32 min_eff_obs_num_;
+  ::google::protobuf::int32 max_frm_interval_;
+  ::google::protobuf::int32 local_win_size_;
   friend void  protobuf_AddDesc_param_2eproto();
   friend void protobuf_AssignDesc_param_2eproto();
   friend void protobuf_ShutdownFile_param_2eproto();
@@ -1035,6 +1065,78 @@ inline void YavieParameter::set_gravity(double value) {
   set_has_gravity();
   gravity_ = value;
   // @@protoc_insertion_point(field_set:hityavie.YavieParameter.gravity)
+}
+
+// required int32 min_eff_obs_num = 6;
+inline bool YavieParameter::has_min_eff_obs_num() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void YavieParameter::set_has_min_eff_obs_num() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void YavieParameter::clear_has_min_eff_obs_num() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void YavieParameter::clear_min_eff_obs_num() {
+  min_eff_obs_num_ = 0;
+  clear_has_min_eff_obs_num();
+}
+inline ::google::protobuf::int32 YavieParameter::min_eff_obs_num() const {
+  // @@protoc_insertion_point(field_get:hityavie.YavieParameter.min_eff_obs_num)
+  return min_eff_obs_num_;
+}
+inline void YavieParameter::set_min_eff_obs_num(::google::protobuf::int32 value) {
+  set_has_min_eff_obs_num();
+  min_eff_obs_num_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.YavieParameter.min_eff_obs_num)
+}
+
+// required int32 max_frm_interval = 7;
+inline bool YavieParameter::has_max_frm_interval() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void YavieParameter::set_has_max_frm_interval() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void YavieParameter::clear_has_max_frm_interval() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void YavieParameter::clear_max_frm_interval() {
+  max_frm_interval_ = 0;
+  clear_has_max_frm_interval();
+}
+inline ::google::protobuf::int32 YavieParameter::max_frm_interval() const {
+  // @@protoc_insertion_point(field_get:hityavie.YavieParameter.max_frm_interval)
+  return max_frm_interval_;
+}
+inline void YavieParameter::set_max_frm_interval(::google::protobuf::int32 value) {
+  set_has_max_frm_interval();
+  max_frm_interval_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.YavieParameter.max_frm_interval)
+}
+
+// required int32 local_win_size = 8;
+inline bool YavieParameter::has_local_win_size() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void YavieParameter::set_has_local_win_size() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void YavieParameter::clear_has_local_win_size() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void YavieParameter::clear_local_win_size() {
+  local_win_size_ = 0;
+  clear_has_local_win_size();
+}
+inline ::google::protobuf::int32 YavieParameter::local_win_size() const {
+  // @@protoc_insertion_point(field_get:hityavie.YavieParameter.local_win_size)
+  return local_win_size_;
+}
+inline void YavieParameter::set_local_win_size(::google::protobuf::int32 value) {
+  set_has_local_win_size();
+  local_win_size_ = value;
+  // @@protoc_insertion_point(field_set:hityavie.YavieParameter.local_win_size)
 }
 
 // -------------------------------------------------------------------

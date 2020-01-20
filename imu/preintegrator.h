@@ -26,6 +26,8 @@ public:
     Eigen::Vector3d GetBa() const;
     Eigen::Vector3d GetBg() const;
     Eigen::Matrix<double, 15, 15> GetJacobian() const;
+    Eigen::Matrix<double, 15, 15> GetCovariance() const;
+    Eigen::Vector3d GetGravity() const;
     double GetDt() const;
 
     Preintegrator(const Preintegrator &) = delete;

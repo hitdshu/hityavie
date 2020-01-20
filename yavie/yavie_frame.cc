@@ -4,7 +4,7 @@ namespace hityavie {
 
 int YavieFrame::next_id_ = 0;
 
-YavieFrame::YavieFrame(double timestamp, const Eigen::Matrix4d &Twb, const std::vector<Feature> &feats, const Preintegrator::Ptr &pintor) {
+YavieFrame::YavieFrame(double timestamp, const Eigen::Matrix4d &Twb, const std::vector<Feature> &feats, const Preintegrator::Ptr &pintor, const Eigen::Vector3d &v) {
     id_ = next_id_++;
     for (const auto &feat : feats) {
         features_[feat.id] = feat;
@@ -13,6 +13,7 @@ YavieFrame::YavieFrame(double timestamp, const Eigen::Matrix4d &Twb, const std::
     timestamp_ = timestamp;
     twb_ = Twb;
     pintor_ = pintor;
+    v_ = v;
 }
 
 void YavieFrame::EnableObs(int id) {

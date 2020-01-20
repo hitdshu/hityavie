@@ -2,6 +2,10 @@
 #include "yavie/yavie_frame.h"
 #include "yavie/yavie_point.h"
 #include "common/geometry_utility.h"
+#include "common/adapter.h"
+#include "optim/error_imu.h"
+#include "optim/error_prj_vie.h"
+#include "optim/pose_parameterization.h"
 
 namespace hityavie {
 
@@ -25,6 +29,10 @@ void YavieEstimator::ProcessImg(double timestamp, cv::Mat &img) {
     }
     if (kYavieSfm == state_) {
         YavieSfm(timestamp, img);
+        return;
+    }
+    if (kYavieTracking == state_) {
+        YavieTracking(timestamp, img);
         return;
     }
 }
@@ -72,6 +80,34 @@ void YavieEstimator::YavieSfm(double timestamp, cv::Mat &img) {
         state_ = kYavieCalib;
         VisualInertialAlign();
     }
+}
+
+void YavieEstimator::YavieTracking(double timestamp, cv::Mat &img) {
+    std::vector<Feature> kpts;
+    tracker_->Track(img, kpts);
+    Preintegrator::Ptr pitor(new Preintegrator());
+    std::vector<YavieImuData> imu_data = GetImuDataBetweenImages(last_img_timestamp_, timestamp);
+    pitor->Init(param_.np(), gravity_, last_imu_data_.lin_acc, last_imu_data_.ang_vel, last_ba_, last_bg_);
+    double last_integ_time = last_img_timestamp_;
+    for (const auto &id : imu_data) {
+        pitor->Integrate(id.timestamp - last_integ_time, id.lin_acc, id.ang_vel);
+        last_integ_time = id.timestamp;
+    }
+    YavieFrame::Ptr nf(new YavieFrame(timestamp, last_twb_, kpts, pitor, last_v_));
+    YavieFrame::Ptr last_frm = map_->GetLastFrame();
+    SolvPnp(last_frm, nf);
+    if (nf->GetEffObsNum() < param_.min_eff_obs_num() || nf->GetId() - last_frm->GetId() >= param_.max_frm_interval()) {
+        AddKeyFrame(last_frm, nf);
+        map_->AddFrame(nf);
+        LocalOptimization();
+        last_img_timestamp_ = timestamp;
+        last_imu_data_ = imu_data[imu_data.size() - 1];
+        last_ba_ = nf->GetPreintegrator()->GetBa();
+        last_bg_ = nf->GetPreintegrator()->GetBg();
+        last_v_ = nf->GetV();
+    }
+    map_->SetCurFrame(nf);
+    last_twb_ = nf->GetPose();
 }
 
 void YavieEstimator::VisualInertialAlign() {
@@ -157,6 +193,12 @@ void YavieEstimator::LinearAlignment() {
     rfx = RefineGravity(rfx);
     rfx = RefineGravity(rfx);
     VisualInertialInit(rfx);
+    GlobalOptimization();
+    YavieFrame::Ptr lf = map_->GetLastFrame();
+    last_twb_ = lf->GetPose();
+    last_ba_ = lf->GetPreintegrator()->GetBa();
+    last_bg_ = lf->GetPreintegrator()->GetBg();
+    last_v_ = lf->GetV();
     state_ = kYavieTracking;
 }
 
@@ -257,10 +299,11 @@ void YavieEstimator::VisualInertialInit(const Eigen::VectorXd &x) {
         Eigen::Matrix4d Tb0bk = Tbc * Tc0ck * Tbc.inverse();
         Eigen::Matrix4d Twbk = Twb0 * Tb0bk;
         YavieFrame::Ptr nyf;
+        Eigen::Vector3d v = x.block(3 * idx, 0, 3, 1);
         if (0 == idx) {
-            nyf.reset(new YavieFrame(init_frms_[idx].second, Twbk, frm->GetFeatures(), Preintegrator::Ptr()));
+            nyf.reset(new YavieFrame(init_frms_[idx].second, Twbk, frm->GetFeatures(), Preintegrator::Ptr(), v));
         } else {
-            nyf.reset(new YavieFrame(init_frms_[idx].second, Twbk, frm->GetFeatures(), init_ints_[idx - 1]));
+            nyf.reset(new YavieFrame(init_frms_[idx].second, Twbk, frm->GetFeatures(), init_ints_[idx - 1], v));
         }
         map_->AddFrame(nyf);
     }
@@ -284,6 +327,327 @@ void YavieEstimator::VisualInertialInit(const Eigen::VectorXd &x) {
         if (np->GetObsNum() < 2) {
             map_->RmPoint(np->GetId());
         }
+    }
+}
+
+void YavieEstimator::SolvPnp(YavieFrame::Ptr &lf, YavieFrame::Ptr &cf) {
+    std::vector<Eigen::Vector2d> vs2d;
+    std::vector<Eigen::Vector3d> vs3d;
+    std::vector<int> fids;
+    std::vector<Feature> feats_lf = lf->GetFeatures();
+    std::vector<Feature> feats_cf = cf->GetFeatures();
+    for (const auto &fl : feats_lf) {
+        if (lf->IsEffeObs(fl.id)) {
+            for (const auto &fc : feats_cf) {
+                if (fc.id == fl.id) {
+                    vs2d.push_back(fc.pt_und);
+                    vs3d.push_back(map_->GetPoint(fl.id)->GetPosition());
+                    fids.push_back(fl.id);
+                }
+            }
+        }
+    }
+    Eigen::Matrix<double, 7, 1> plf = GeometryUtility::Pose2Vec(lf->GetPose());
+    Eigen::Matrix<double, 9, 1> vlf;
+    vlf.setZero();
+    vlf.block(0, 0, 3, 1) = lf->GetV();
+    vlf.block(3, 0, 3, 1) = cf->GetPreintegrator()->GetBa();
+    vlf.block(6, 0, 3, 1) = cf->GetPreintegrator()->GetBg();
+    Eigen::Matrix<double, 7, 1> pcf = GeometryUtility::Pose2Vec(cf->GetPose());
+    Eigen::Matrix<double, 9, 1> vcf;
+    vcf.setZero();
+    vcf.block(0, 0, 3, 1) = cf->GetV();
+    vcf.block(3, 0, 3, 1) = cf->GetPreintegrator()->GetBa();
+    vcf.block(6, 0, 3, 1) = cf->GetPreintegrator()->GetBg();
+    Eigen::Matrix3d k = Adapter::Cvk2Matk(cam_->GetMatK());
+    Eigen::Matrix<double, 7, 1> tbc = GeometryUtility::Pose2Vec(cam_->GetTfic());
+    ceres::Problem problem;
+    ceres::LossFunction *loss_function = new ceres::HuberLoss(2);
+    ceres::LocalParameterization *pose_ptr = new PoseParameterization();
+    for (size_t idx = 0; idx < vs2d.size(); ++idx) {
+        Eigen::Vector2d &pt_obs = vs2d[idx];
+        Eigen::Vector3d &pt_3d = vs3d[idx];
+        Eigen::Vector2d sqrt_info(1, 1);
+        ceres::CostFunction *cost_func = new ErrorPrjVie(pt_obs, sqrt_info, k);
+        problem.AddResidualBlock(cost_func, loss_function, &pcf[0], &tbc[0], &pt_3d[0]);
+        problem.SetParameterBlockConstant(&pt_3d[0]);
+    }
+    ceres::CostFunction *imu_cost_func = new ErrorImu(cf->GetPreintegrator());
+    problem.AddResidualBlock(imu_cost_func, nullptr, &plf[0], &vlf[0], &pcf[0], &vcf[0]);
+    problem.SetParameterization(&plf[0], pose_ptr);
+    problem.SetParameterization(&pcf[0], pose_ptr);
+    problem.SetParameterization(&tbc[0], pose_ptr);
+    problem.SetParameterBlockConstant(&plf[0]);
+    problem.SetParameterBlockConstant(&vlf[0]);
+    problem.SetParameterBlockConstant(&tbc[0]);
+    ceres::Solver::Options options;
+    options.max_num_iterations = 20;
+    options.linear_solver_type = ceres::SPARSE_NORMAL_CHOLESKY;
+    ceres::Solver::Summary summary;
+    ceres::Solve(options, &problem, &summary);
+    Eigen::Matrix4d ntwb = GeometryUtility::Vec2Pose(pcf);
+    cf->SetPose(ntwb);
+    cf->SetV(vlf.block(0, 0, 3, 1));
+    for (size_t idx = 0; idx < fids.size(); ++idx) {
+        Eigen::Vector2d &pt_obs = vs2d[idx];
+        Eigen::Vector3d &pt_3d = vs3d[idx];
+        Eigen::Vector2d pt_prj = cam_->Project(GeometryUtility::Transform((ntwb * cam_->GetTfic()).inverse(), pt_3d));
+        if ((pt_obs - pt_prj).norm() < 6) {
+            cf->EnableObs(fids[idx]);
+        }
+    }
+}
+
+void YavieEstimator::AddKeyFrame(YavieFrame::Ptr &last_frm, YavieFrame::Ptr &cur_frm) {
+    std::vector<Feature> feats_lf = last_frm->GetFeatures();
+    std::vector<Feature> feats_cf = cur_frm->GetFeatures();
+    Eigen::Matrix4d tcw_lf = (last_frm->GetPose() * cam_->GetTfic()).inverse();
+    Eigen::Matrix4d tcw_cf = (cur_frm->GetPose() * cam_->GetTfic()).inverse();
+    for (const auto &fl : feats_lf) {
+        if (!map_->HasPoint(fl.id)) {
+            for (const auto &fc : feats_cf) {
+                if (fl.id == fc.id) {
+                    Eigen::Vector3d pt = GeometryUtility::Triangulate(tcw_lf, cam_->Pt2Ray(fl.pt_und), tcw_cf, cam_->Pt2Ray(fc.pt_und));
+                    Eigen::Vector3d pt1 = GeometryUtility::Transform(tcw_lf, pt);
+                    Eigen::Vector3d pt2 = GeometryUtility::Transform(tcw_cf, pt);
+                    if (pt1[2] > 0 && pt2[2] > 0) {
+                        YaviePoint::Ptr np(new YaviePoint(fl.id, pt));
+                        map_->AddPoint(np);
+                        last_frm->EnableObs(fl.id);
+                        cur_frm->EnableObs(fc.id);
+                        np->AddObs(last_frm);
+                    }
+                }
+            }
+        }
+    }
+    for (const auto &feat : feats_cf) {
+        if (cur_frm->IsEffeObs(feat.id)) {
+            map_->GetPoint(feat.id)->AddObs(cur_frm);
+        }
+    }
+}
+
+void YavieEstimator::LocalOptimization() {
+    Eigen::Matrix3d k = Adapter::Cvk2Matk(cam_->GetMatK());
+    Eigen::Matrix<double, 7, 1> tbc = GeometryUtility::Pose2Vec(cam_->GetTfic());
+    std::vector<YavieFrame::Ptr> all_frms = map_->GetAllFrames();
+    std::set<YavieFrame::Ptr> inner_frms_set(all_frms.end() - std::min((int)all_frms.size(), param_.local_win_size()), all_frms.end());
+    std::vector<YavieFrame::Ptr> inner_frms(all_frms.end() - std::min((int)all_frms.size(), param_.local_win_size()), all_frms.end());
+    std::set<YaviePoint::Ptr> inner_pts_set;
+    std::set<YavieFrame::Ptr> outer_frms_set;
+    for (auto iter = inner_frms.begin(); iter != inner_frms.end(); ++iter) {
+        std::vector<Feature> feats = (*iter)->GetFeatures();
+        for (const auto &feat: feats) {
+            if (!(*iter)->IsEffeObs(feat.id)) {
+                continue;
+            }
+            inner_pts_set.insert(map_->GetPoint(feat.id));
+        }
+    } 
+    for (auto iter = inner_pts_set.begin(); iter != inner_pts_set.end(); ++iter) {
+        std::vector<YavieFrame::Ptr> frms = (*iter)->GetAllObs();
+        for (const auto &frm : frms) {
+            if (!inner_frms_set.count(frm)) {
+                outer_frms_set.insert(frm);
+            }
+        }
+    }
+    std::vector<YaviePoint::Ptr> inner_pts(inner_pts_set.begin(), inner_pts_set.end());
+    std::vector<YavieFrame::Ptr> outer_frms(outer_frms_set.begin(), outer_frms_set.end());
+    std::map<int, Eigen::Matrix<double, 7, 1>> id_pv_inner;
+    std::map<int, Eigen::Matrix<double, 9, 1>> id_bv_inner;
+    std::map<int, Eigen::Matrix<double, 7, 1>> id_pv_outer;
+    std::map<int, Eigen::Vector3d> id_pt;
+    for (const auto &frm : inner_frms) {
+        Eigen::Matrix4d twb = frm->GetPose();
+        id_pv_inner[frm->GetId()] = GeometryUtility::Pose2Vec(twb);
+    }
+    for (const auto &frm : outer_frms) {
+        Eigen::Matrix4d twb = frm->GetPose();
+        id_pv_outer[frm->GetId()] = GeometryUtility::Pose2Vec(twb);
+    }
+    for (size_t idx = 0; idx < inner_frms.size() - 1; ++idx) {
+        YavieFrame::Ptr pf = inner_frms[idx];
+        YavieFrame::Ptr cf = inner_frms[idx + 1];
+        Preintegrator::Ptr pi = cf->GetPreintegrator();
+        Eigen::Matrix<double, 9, 1> bv;
+        bv.block(0, 0, 3, 1) = pf->GetV();
+        bv.block(3, 0, 3, 1) = cf->GetPreintegrator()->GetBa();
+        bv.block(6, 0, 3, 1) = cf->GetPreintegrator()->GetBg();
+        id_bv_inner[pf->GetId()] = bv;
+        if (idx == inner_frms.size() - 2) {
+            bv.block(0, 0, 3, 1) = cf->GetV();
+            id_bv_inner[cf->GetId()] = bv;
+        }
+    }
+    for (const auto &pt : inner_pts) {
+        id_pt[pt->GetId()] = pt->GetPosition();
+    }
+    ceres::Problem problem;
+    ceres::LossFunction *loss_function = new ceres::HuberLoss(2);
+    ceres::LocalParameterization *pose_ptr = new PoseParameterization();
+    for (const auto &frm : inner_frms) {
+        std::vector<Feature> feats = frm->GetFeatures();
+        Eigen::Matrix<double, 7, 1> &pcf = id_pv_inner[frm->GetId()];
+        for (const auto &feat: feats) {
+            if (!frm->IsEffeObs(feat.id)) {
+                continue;
+            }
+            const Eigen::Vector2d &pt_obs = feat.pt_und;
+            Eigen::Vector3d &pt_3d = id_pt[feat.id];
+            Eigen::Vector2d sqrt_info(1, 1);
+            ceres::CostFunction *cost_func = new ErrorPrjVie(pt_obs, sqrt_info, k);
+            problem.AddResidualBlock(cost_func, loss_function, &pcf[0], &tbc[0], &pt_3d[0]);
+        }
+        problem.SetParameterization(&pcf[0], pose_ptr);
+    }
+    for (size_t idx = 0; idx < inner_frms.size() - 1; ++idx) {
+        YavieFrame::Ptr pf = inner_frms[idx];
+        YavieFrame::Ptr cf = inner_frms[idx + 1];
+        Eigen::Matrix<double, 7, 1> &ppf = id_pv_inner[pf->GetId()];
+        Eigen::Matrix<double, 7, 1> &pcf = id_pv_inner[cf->GetId()];
+        Eigen::Matrix<double, 9, 1> &vpf = id_bv_inner[pf->GetId()];
+        Eigen::Matrix<double, 9, 1> &vcf = id_bv_inner[cf->GetId()];
+        ceres::CostFunction *imu_cost_func = new ErrorImu(cf->GetPreintegrator());
+        problem.AddResidualBlock(imu_cost_func, nullptr, &ppf[0], &vpf[0], &pcf[0], &vcf[0]);
+        problem.SetParameterization(&ppf[0], pose_ptr);
+        problem.SetParameterization(&pcf[0], pose_ptr);
+    }
+    for (const auto &frm : outer_frms) {
+        std::vector<Feature> feats = frm->GetFeatures();
+        Eigen::Matrix<double, 7, 1> &pcf = id_pv_outer[frm->GetId()];
+        for (const auto &feat: feats) {
+            if (!frm->IsEffeObs(feat.id)) {
+                continue;
+            }
+            if (inner_pts_set.find(map_->GetPoint(feat.id)) == inner_pts_set.end()) {
+                continue;
+            }
+            const Eigen::Vector2d &pt_obs = feat.pt_und;
+            Eigen::Vector3d &pt_3d = id_pt[feat.id];
+            Eigen::Vector2d sqrt_info(1, 1);
+            ceres::CostFunction *cost_func = new ErrorPrjVie(pt_obs, sqrt_info, k);
+            problem.AddResidualBlock(cost_func, loss_function, &pcf[0], &tbc[0], &pt_3d[0]);
+        }
+        problem.SetParameterization(&pcf[0], pose_ptr);
+        problem.SetParameterBlockConstant(&pcf[0]);
+    }
+    problem.SetParameterization(&tbc[0], pose_ptr);
+    problem.SetParameterBlockConstant(&tbc[0]);  
+    int ff_id = all_frms[0]->GetId();
+    if (id_pv_inner.count(ff_id)) {
+        Eigen::Matrix<double, 7, 1> &pv = id_pv_inner[ff_id];
+        problem.SetParameterBlockConstant(&pv[0]);
+    }
+    ceres::Solver::Options options;
+    options.max_num_iterations = 20;
+    options.linear_solver_type = ceres::SPARSE_NORMAL_CHOLESKY;
+    ceres::Solver::Summary summary;
+    ceres::Solve(options, &problem, &summary);
+    for (const auto &pt : inner_pts) {
+        pt->SetPosition(id_pt[pt->GetId()]);
+    }
+    for (auto &frm : inner_frms) {
+        Eigen::Matrix4d ntwb = GeometryUtility::Vec2Pose(id_pv_inner[frm->GetId()]);
+        frm->SetPose(ntwb);
+    }
+    for (size_t idx = 0; idx < inner_frms.size() - 1; ++idx) {
+        YavieFrame::Ptr pf = inner_frms[idx];
+        YavieFrame::Ptr cf = inner_frms[idx + 1];
+        Eigen::Matrix<double, 9, 1> pvb = id_bv_inner[pf->GetId()];
+        pf->SetV(pvb.block(0, 0, 3, 1));
+        Eigen::Matrix<double, 9, 1> cvb = id_bv_inner[cf->GetId()];
+        cf->SetV(cvb.block(0, 0, 3, 1));
+        Preintegrator::Ptr it = cf->GetPreintegrator();
+        it->Reintegrate(pvb.block(3, 0, 3, 1), pvb.block(6, 0, 3, 1));
+    }
+}
+
+void YavieEstimator::GlobalOptimization() {
+    Eigen::Matrix3d k = Adapter::Cvk2Matk(cam_->GetMatK());
+    Eigen::Matrix<double, 7, 1> tbc = GeometryUtility::Pose2Vec(cam_->GetTfic());
+    std::vector<YavieFrame::Ptr> all_frms = map_->GetAllFrames();
+    std::vector<YaviePoint::Ptr> all_pts = map_->GetAllPoints();
+    std::map<int, Eigen::Matrix<double, 7, 1>> id_pv;
+    std::map<int, Eigen::Matrix<double, 9, 1>> id_bv;
+    std::map<int, Eigen::Vector3d> id_pt;
+    for (const auto &frm : all_frms) {
+        Eigen::Matrix4d twb = frm->GetPose();
+        id_pv[frm->GetId()] = GeometryUtility::Pose2Vec(twb);
+    }
+    for (size_t idx = 0; idx < all_frms.size() - 1; ++idx) {
+        YavieFrame::Ptr pf = all_frms[idx];
+        YavieFrame::Ptr cf = all_frms[idx + 1];
+        Preintegrator::Ptr pi = cf->GetPreintegrator();
+        Eigen::Matrix<double, 9, 1> bv;
+        bv.block(0, 0, 3, 1) = pf->GetV();
+        bv.block(3, 0, 3, 1) = cf->GetPreintegrator()->GetBa();
+        bv.block(6, 0, 3, 1) = cf->GetPreintegrator()->GetBg();
+        id_bv[pf->GetId()] = bv;
+        if (idx == all_frms.size() - 2) {
+            bv.block(0, 0, 3, 1) = cf->GetV();
+            id_bv[cf->GetId()] = bv;
+        }
+    }
+    for (const auto &pt : all_pts) {
+        id_pt[pt->GetId()] = pt->GetPosition();
+    }
+    ceres::Problem problem;
+    ceres::LossFunction *loss_function = new ceres::HuberLoss(2);
+    ceres::LocalParameterization *pose_ptr = new PoseParameterization();
+    for (const auto &frm : all_frms) {
+        std::vector<Feature> feats = frm->GetFeatures();
+        Eigen::Matrix<double, 7, 1> &pcf = id_pv[frm->GetId()];
+        for (const auto &feat: feats) {
+            if (!frm->IsEffeObs(feat.id)) {
+                continue;
+            }
+            const Eigen::Vector2d &pt_obs = feat.pt_und;
+            Eigen::Vector3d &pt_3d = id_pt[feat.id];
+            Eigen::Vector2d sqrt_info(1, 1);
+            ceres::CostFunction *cost_func = new ErrorPrjVie(pt_obs, sqrt_info, k);
+            problem.AddResidualBlock(cost_func, loss_function, &pcf[0], &tbc[0], &pt_3d[0]);
+        }
+    }
+    for (size_t idx = 0; idx < all_frms.size() - 1; ++idx) {
+        YavieFrame::Ptr pf = all_frms[idx];
+        YavieFrame::Ptr cf = all_frms[idx + 1];
+        Eigen::Matrix<double, 7, 1> &ppf = id_pv[pf->GetId()];
+        Eigen::Matrix<double, 7, 1> &pcf = id_pv[cf->GetId()];
+        Eigen::Matrix<double, 9, 1> &vpf = id_bv[pf->GetId()];
+        Eigen::Matrix<double, 9, 1> &vcf = id_bv[cf->GetId()];
+        ceres::CostFunction *imu_cost_func = new ErrorImu(cf->GetPreintegrator());
+        problem.AddResidualBlock(imu_cost_func, nullptr, &ppf[0], &vpf[0], &pcf[0], &vcf[0]);
+        problem.SetParameterization(&ppf[0], pose_ptr);
+        problem.SetParameterization(&pcf[0], pose_ptr);
+        if (0 == idx) {
+            problem.SetParameterBlockConstant(&ppf[0]);  
+        }
+    }
+    problem.SetParameterization(&tbc[0], pose_ptr);
+    problem.SetParameterBlockConstant(&tbc[0]);  
+    ceres::Solver::Options options;
+    options.max_num_iterations = 20;
+    options.linear_solver_type = ceres::SPARSE_NORMAL_CHOLESKY;
+    ceres::Solver::Summary summary;
+    ceres::Solve(options, &problem, &summary);
+    for (auto &frm : all_frms) {
+        Eigen::Matrix4d ntwb = GeometryUtility::Vec2Pose(id_pv[frm->GetId()]);
+        frm->SetPose(ntwb);
+    }
+    for (size_t idx = 0; idx < all_frms.size() - 1; ++idx) {
+        YavieFrame::Ptr pf = all_frms[idx];
+        YavieFrame::Ptr cf = all_frms[idx + 1];
+        Eigen::Matrix<double, 9, 1> pvb = id_bv[pf->GetId()];
+        pf->SetV(pvb.block(0, 0, 3, 1));
+        Eigen::Matrix<double, 9, 1> cvb = id_bv[cf->GetId()];
+        cf->SetV(cvb.block(0, 0, 3, 1));
+        Preintegrator::Ptr it = cf->GetPreintegrator();
+        it->Reintegrate(pvb.block(3, 0, 3, 1), pvb.block(6, 0, 3, 1));
+    }
+    for (const auto &pt : all_pts) {
+        pt->SetPosition(id_pt[pt->GetId()]);
     }
 }
 

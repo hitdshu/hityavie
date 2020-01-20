@@ -52,12 +52,15 @@ void protobuf_AssignDesc_param_2eproto() {
       "param.proto");
   GOOGLE_CHECK(file != NULL);
   YavieParameter_descriptor_ = file->message_type(0);
-  static const int YavieParameter_offsets_[5] = {
+  static const int YavieParameter_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, cam_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, np_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, tp_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, sp_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, gravity_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, min_eff_obs_num_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, max_frm_interval_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(YavieParameter, local_win_size_),
   };
   YavieParameter_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -232,27 +235,29 @@ void protobuf_AddDesc_param_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\013param.proto\022\010hityavie\"\262\001\n\016YavieParamet"
+    "\n\013param.proto\022\010hityavie\"\375\001\n\016YavieParamet"
     "er\022\"\n\003cam\030\001 \002(\0132\025.hityavie.CameraParam\022\'"
     "\n\002np\030\002 \002(\0132\033.hityavie.ImuNoiseParameter\022"
     "\"\n\002tp\030\003 \002(\0132\026.hityavie.TrackerParam\022\036\n\002s"
     "p\030\004 \002(\0132\022.hityavie.SfmParam\022\017\n\007gravity\030\005"
-    " \002(\001\"]\n\021ImuNoiseParameter\022\021\n\tacc_noise\030\001"
-    " \002(\001\022\021\n\tgyr_noise\030\002 \002(\001\022\020\n\010ba_noise\030\003 \002("
-    "\001\022\020\n\010bg_noise\030\004 \002(\001\"]\n\013CameraParam\022\014\n\004ty"
-    "pe\030\001 \002(\t\022\013\n\003tic\030\002 \003(\001\0223\n\rfisheye_param\030\003"
-    " \001(\0132\034.hityavie.FisheyeCameraParam\"q\n\022Fi"
-    "sheyeCameraParam\022\n\n\002fx\030\001 \002(\001\022\n\n\002fy\030\002 \002(\001"
-    "\022\n\n\002cx\030\003 \002(\001\022\n\n\002cy\030\004 \002(\001\022\014\n\004dist\030\005 \003(\001\022\r"
-    "\n\005width\030\006 \002(\005\022\016\n\006height\030\007 \002(\005\"Q\n\014Tracker"
-    "Param\022\014\n\004type\030\001 \002(\t\0223\n\010of_param\030\002 \001(\0132!."
-    "hityavie.OpticalflowTrackerParam\"i\n\027Opti"
-    "calflowTrackerParam\022\024\n\014min_feat_num\030\001 \002("
-    "\005\022\025\n\rnms_dist_thre\030\002 \002(\001\022\020\n\010det_thre\030\003 \002"
-    "(\005\022\017\n\007bd_thre\030\004 \002(\001\"t\n\010SfmParam\022\027\n\017min_e"
-    "ff_obs_num\030\001 \002(\005\022\030\n\020max_frm_interval\030\002 \002"
-    "(\005\022\026\n\016local_win_size\030\003 \002(\005\022\035\n\025min_tracki"
-    "ng_feat_num\030\004 \002(\005", 817);
+    " \002(\001\022\027\n\017min_eff_obs_num\030\006 \002(\005\022\030\n\020max_frm"
+    "_interval\030\007 \002(\005\022\026\n\016local_win_size\030\010 \002(\005\""
+    "]\n\021ImuNoiseParameter\022\021\n\tacc_noise\030\001 \002(\001\022"
+    "\021\n\tgyr_noise\030\002 \002(\001\022\020\n\010ba_noise\030\003 \002(\001\022\020\n\010"
+    "bg_noise\030\004 \002(\001\"]\n\013CameraParam\022\014\n\004type\030\001 "
+    "\002(\t\022\013\n\003tic\030\002 \003(\001\0223\n\rfisheye_param\030\003 \001(\0132"
+    "\034.hityavie.FisheyeCameraParam\"q\n\022Fisheye"
+    "CameraParam\022\n\n\002fx\030\001 \002(\001\022\n\n\002fy\030\002 \002(\001\022\n\n\002c"
+    "x\030\003 \002(\001\022\n\n\002cy\030\004 \002(\001\022\014\n\004dist\030\005 \003(\001\022\r\n\005wid"
+    "th\030\006 \002(\005\022\016\n\006height\030\007 \002(\005\"Q\n\014TrackerParam"
+    "\022\014\n\004type\030\001 \002(\t\0223\n\010of_param\030\002 \001(\0132!.hitya"
+    "vie.OpticalflowTrackerParam\"i\n\027Opticalfl"
+    "owTrackerParam\022\024\n\014min_feat_num\030\001 \002(\005\022\025\n\r"
+    "nms_dist_thre\030\002 \002(\001\022\020\n\010det_thre\030\003 \002(\005\022\017\n"
+    "\007bd_thre\030\004 \002(\001\"t\n\010SfmParam\022\027\n\017min_eff_ob"
+    "s_num\030\001 \002(\005\022\030\n\020max_frm_interval\030\002 \002(\005\022\026\n"
+    "\016local_win_size\030\003 \002(\005\022\035\n\025min_tracking_fe"
+    "at_num\030\004 \002(\005", 892);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "param.proto", &protobuf_RegisterTypes);
   YavieParameter::default_instance_ = new YavieParameter();
@@ -287,6 +292,9 @@ const int YavieParameter::kNpFieldNumber;
 const int YavieParameter::kTpFieldNumber;
 const int YavieParameter::kSpFieldNumber;
 const int YavieParameter::kGravityFieldNumber;
+const int YavieParameter::kMinEffObsNumFieldNumber;
+const int YavieParameter::kMaxFrmIntervalFieldNumber;
+const int YavieParameter::kLocalWinSizeFieldNumber;
 #endif  // !_MSC_VER
 
 YavieParameter::YavieParameter()
@@ -316,6 +324,9 @@ void YavieParameter::SharedCtor() {
   tp_ = NULL;
   sp_ = NULL;
   gravity_ = 0;
+  min_eff_obs_num_ = 0;
+  max_frm_interval_ = 0;
+  local_win_size_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -355,7 +366,18 @@ YavieParameter* YavieParameter::New() const {
 }
 
 void YavieParameter::Clear() {
-  if (_has_bits_[0 / 32] & 31) {
+#define OFFSET_OF_FIELD_(f) (reinterpret_cast<char*>(      \
+  &reinterpret_cast<YavieParameter*>(16)->f) - \
+   reinterpret_cast<char*>(16))
+
+#define ZR_(first, last) do {                              \
+    size_t f = OFFSET_OF_FIELD_(first);                    \
+    size_t n = OFFSET_OF_FIELD_(last) - f + sizeof(last);  \
+    ::memset(&first, 0, n);                                \
+  } while (0)
+
+  if (_has_bits_[0 / 32] & 255) {
+    ZR_(gravity_, local_win_size_);
     if (has_cam()) {
       if (cam_ != NULL) cam_->::hityavie::CameraParam::Clear();
     }
@@ -368,8 +390,11 @@ void YavieParameter::Clear() {
     if (has_sp()) {
       if (sp_ != NULL) sp_->::hityavie::SfmParam::Clear();
     }
-    gravity_ = 0;
   }
+
+#undef OFFSET_OF_FIELD_
+#undef ZR_
+
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -446,6 +471,51 @@ bool YavieParameter::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(48)) goto parse_min_eff_obs_num;
+        break;
+      }
+
+      // required int32 min_eff_obs_num = 6;
+      case 6: {
+        if (tag == 48) {
+         parse_min_eff_obs_num:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &min_eff_obs_num_)));
+          set_has_min_eff_obs_num();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(56)) goto parse_max_frm_interval;
+        break;
+      }
+
+      // required int32 max_frm_interval = 7;
+      case 7: {
+        if (tag == 56) {
+         parse_max_frm_interval:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &max_frm_interval_)));
+          set_has_max_frm_interval();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(64)) goto parse_local_win_size;
+        break;
+      }
+
+      // required int32 local_win_size = 8;
+      case 8: {
+        if (tag == 64) {
+         parse_local_win_size:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &local_win_size_)));
+          set_has_local_win_size();
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -504,6 +574,21 @@ void YavieParameter::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->gravity(), output);
   }
 
+  // required int32 min_eff_obs_num = 6;
+  if (has_min_eff_obs_num()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->min_eff_obs_num(), output);
+  }
+
+  // required int32 max_frm_interval = 7;
+  if (has_max_frm_interval()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->max_frm_interval(), output);
+  }
+
+  // required int32 local_win_size = 8;
+  if (has_local_win_size()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->local_win_size(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -545,6 +630,21 @@ void YavieParameter::SerializeWithCachedSizes(
   // required double gravity = 5;
   if (has_gravity()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->gravity(), target);
+  }
+
+  // required int32 min_eff_obs_num = 6;
+  if (has_min_eff_obs_num()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->min_eff_obs_num(), target);
+  }
+
+  // required int32 max_frm_interval = 7;
+  if (has_max_frm_interval()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->max_frm_interval(), target);
+  }
+
+  // required int32 local_win_size = 8;
+  if (has_local_win_size()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->local_win_size(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -592,6 +692,27 @@ int YavieParameter::ByteSize() const {
       total_size += 1 + 8;
     }
 
+    // required int32 min_eff_obs_num = 6;
+    if (has_min_eff_obs_num()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->min_eff_obs_num());
+    }
+
+    // required int32 max_frm_interval = 7;
+    if (has_max_frm_interval()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->max_frm_interval());
+    }
+
+    // required int32 local_win_size = 8;
+    if (has_local_win_size()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->local_win_size());
+    }
+
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -634,6 +755,15 @@ void YavieParameter::MergeFrom(const YavieParameter& from) {
     if (from.has_gravity()) {
       set_gravity(from.gravity());
     }
+    if (from.has_min_eff_obs_num()) {
+      set_min_eff_obs_num(from.min_eff_obs_num());
+    }
+    if (from.has_max_frm_interval()) {
+      set_max_frm_interval(from.max_frm_interval());
+    }
+    if (from.has_local_win_size()) {
+      set_local_win_size(from.local_win_size());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -651,7 +781,7 @@ void YavieParameter::CopyFrom(const YavieParameter& from) {
 }
 
 bool YavieParameter::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x000000ff) != 0x000000ff) return false;
 
   if (has_cam()) {
     if (!this->cam().IsInitialized()) return false;
@@ -675,6 +805,9 @@ void YavieParameter::Swap(YavieParameter* other) {
     std::swap(tp_, other->tp_);
     std::swap(sp_, other->sp_);
     std::swap(gravity_, other->gravity_);
+    std::swap(min_eff_obs_num_, other->min_eff_obs_num_);
+    std::swap(max_frm_interval_, other->max_frm_interval_);
+    std::swap(local_win_size_, other->local_win_size_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

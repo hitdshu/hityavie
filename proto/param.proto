@@ -8,6 +8,9 @@ message YavieParameter {
     required TrackerParam tp = 3;
     required SfmParam sp = 4;
     required double gravity = 5;
+    required int32 min_eff_obs_num = 6;
+    required int32 max_frm_interval = 7;
+    required int32 local_win_size = 8;
 }
 
 message ImuNoiseParameter {

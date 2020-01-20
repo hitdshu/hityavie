@@ -18,16 +18,18 @@ public:
     void AddFrame(const YavieFrame::Ptr &frm);
     void RmPoint(int id);
     void RmFrame(int id);
+    void SetCurFrame(const YavieFrame::Ptr &cf);
 
-    std::vector<YaviePoint::Ptr> GetAllPoints() const;
-    std::vector<YavieFrame::Ptr> GetAllFrames() const;
-    YaviePoint::Ptr GetPoint(int pid) const;
-    YavieFrame::Ptr GetFrame(int fid) const;
-    YavieFrame::Ptr GetLastFrame() const;
-    int GetFrameCnt() const;
-    int GetPointCnt() const;
-    bool HasPoint(int pid) const;
-    bool HasFrame(int fid) const;
+    std::vector<YaviePoint::Ptr> GetAllPoints();
+    std::vector<YavieFrame::Ptr> GetAllFrames();
+    YaviePoint::Ptr GetPoint(int pid);
+    YavieFrame::Ptr GetFrame(int fid);
+    YavieFrame::Ptr GetLastFrame();
+    YavieFrame::Ptr GetCurFrame();
+    int GetFrameCnt();
+    int GetPointCnt();
+    bool HasPoint(int pid);
+    bool HasFrame(int fid);
 
     YavieMap(const YavieMap &) = delete;
     YavieMap &operator=(const YavieMap &) = delete;
@@ -35,6 +37,7 @@ public:
 private:
     std::map<int, YaviePoint::Ptr> id_pt_map_;
     std::map<int, YavieFrame::Ptr> id_frm_map_;
+    YavieFrame::Ptr cf_;
     std::mutex mutex_;
 };
 

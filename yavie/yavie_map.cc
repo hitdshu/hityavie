@@ -13,6 +13,7 @@ void YavieMap::AddFrame(const YavieFrame::Ptr &frm) {
 }
 
 void YavieMap::RmPoint(int id) {
+    std::unique_lock<std::mutex> lock(mutex_);
     auto iter = id_pt_map_.find(id);
     if (iter != id_pt_map_.end()) {
         id_pt_map_.erase(iter);
@@ -20,13 +21,20 @@ void YavieMap::RmPoint(int id) {
 }
 
 void YavieMap::RmFrame(int id) {
+    std::unique_lock<std::mutex> lock(mutex_);
     auto iter = id_frm_map_.find(id);
     if (iter != id_frm_map_.end()) {
         id_frm_map_.erase(iter);
     }
 }
 
-std::vector<YaviePoint::Ptr> YavieMap::GetAllPoints() const {
+void YavieMap::SetCurFrame(const YavieFrame::Ptr &cf) {
+    std::unique_lock<std::mutex> lock(mutex_);
+    cf_ = cf;
+}
+
+std::vector<YaviePoint::Ptr> YavieMap::GetAllPoints() {
+    std::unique_lock<std::mutex> lock(mutex_);
     std::vector<YaviePoint::Ptr> all_pts;
     for (auto iter = id_pt_map_.begin(); iter != id_pt_map_.end(); ++iter) {
         all_pts.push_back(iter->second);
@@ -34,7 +42,8 @@ std::vector<YaviePoint::Ptr> YavieMap::GetAllPoints() const {
     return all_pts;
 }
 
-std::vector<YavieFrame::Ptr> YavieMap::GetAllFrames() const {
+std::vector<YavieFrame::Ptr> YavieMap::GetAllFrames() {
+    std::unique_lock<std::mutex> lock(mutex_);
     std::vector<YavieFrame::Ptr> all_frms;
     for (auto iter = id_frm_map_.begin(); iter != id_frm_map_.end(); ++iter) {
         all_frms.push_back(iter->second);
@@ -42,7 +51,8 @@ std::vector<YavieFrame::Ptr> YavieMap::GetAllFrames() const {
     return all_frms;
 }
 
-YaviePoint::Ptr YavieMap::GetPoint(int pid) const {
+YaviePoint::Ptr YavieMap::GetPoint(int pid) {
+    std::unique_lock<std::mutex> lock(mutex_);
     auto iter = id_pt_map_.find(pid);
     if (iter != id_pt_map_.end()) {
         return iter->second;
@@ -51,7 +61,8 @@ YaviePoint::Ptr YavieMap::GetPoint(int pid) const {
     }
 }
 
-YavieFrame::Ptr YavieMap::GetFrame(int fid) const {
+YavieFrame::Ptr YavieMap::GetFrame(int fid) {
+    std::unique_lock<std::mutex> lock(mutex_);
     auto iter = id_frm_map_.find(fid);
     if (iter != id_frm_map_.end()) {
         return iter->second;
@@ -60,20 +71,28 @@ YavieFrame::Ptr YavieMap::GetFrame(int fid) const {
     }
 }
 
-YavieFrame::Ptr YavieMap::GetLastFrame() const {
+YavieFrame::Ptr YavieMap::GetLastFrame() {
+    std::unique_lock<std::mutex> lock(mutex_);
     auto iter = id_frm_map_.end();
     return (--iter)->second;
 }
 
-int YavieMap::GetFrameCnt() const {
+YavieFrame::Ptr YavieMap::GetCurFrame() {
+    return cf_;
+}
+
+int YavieMap::GetFrameCnt() {
+    std::unique_lock<std::mutex> lock(mutex_);
     return id_frm_map_.size();
 }
 
-int YavieMap::GetPointCnt() const {
+int YavieMap::GetPointCnt() {
+    std::unique_lock<std::mutex> lock(mutex_);
     return id_pt_map_.size();
 }
 
-bool YavieMap::HasPoint(int pid) const {
+bool YavieMap::HasPoint(int pid) {
+    std::unique_lock<std::mutex> lock(mutex_);
     auto iter = id_pt_map_.find(pid);
     if (iter != id_pt_map_.end()) {
         return true;
@@ -82,7 +101,8 @@ bool YavieMap::HasPoint(int pid) const {
     }
 }
 
-bool YavieMap::HasFrame(int fid) const {
+bool YavieMap::HasFrame(int fid) {
+    std::unique_lock<std::mutex> lock(mutex_);
     auto iter = id_frm_map_.find(fid);
     if (iter != id_frm_map_.end()) {
         return true;
