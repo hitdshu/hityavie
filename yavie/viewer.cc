@@ -10,9 +10,13 @@ namespace hityavie {
 #define GL_COLOR_WHITE      (glColor3f(1, 1, 1))
 #define GL_COLOR_LGREEN     (glColor3f(0.125, 0.698, 0.667))
 
-void Viewer::InitViewer(const YavieMap::Ptr &map, const BaseCamera::Ptr cam) {
+void Viewer::InitViewer(const YavieMap::Ptr &map, const BaseCamera::Ptr cam, const GtReader::Ptr &gtm) {
     map_ = map;
     cam_ = cam;
+    gtm_ = gtm;
+    has_transform_ = false;
+    twg_.setIdentity();
+    tgc_.setIdentity();
     vt_ = std::thread(std::bind(&Viewer::Show, this));
     is_running_.store(true);
 }
@@ -46,33 +50,31 @@ void Viewer::Show() {
 
 void Viewer::DrawPoint() {
     if (map_) {
-        // YavieFrame::Ptr cf = map_->GetCurFrame();
-        // if (cf) {
-        //     glPointSize(2);
-        //     glBegin(GL_POINTS);
-        //     GL_COLOR_GREEN;
-        //     std::vector<Feature> fts = cf->GetFeatures();
-        //     for (auto &ft : fts) {
-        //         if (!map_->HasPoint(ft.id)) {
-        //             continue;
-        //         }
-        //         YaviePoint::Ptr pt = map_->GetPoint(ft.id);
-        //         if (pt) {
-        //             Eigen::Vector3d tp = pt->GetPosition();
-        //             glVertex3f(tp[0], tp[1], tp[2]);
-        //         }
-        //     }
-        //     glEnd();
-        // }
+        YavieFrame::Ptr cf = map_->GetCurFrame();
+        if (cf) {
+            glPointSize(2);
+            glBegin(GL_POINTS);
+            GL_COLOR_GREEN;
+            std::vector<Feature> fts = cf->GetFeatures();
+            for (auto &ft : fts) {
+                if (!map_->HasPoint(ft.id)) {
+                    continue;
+                }
+                YaviePoint::Ptr pt = map_->GetPoint(ft.id);
+                if (pt) {
+                    Eigen::Vector3d tp = pt->GetPosition();
+                    glVertex3f(tp[0], tp[1], tp[2]);
+                }
+            }
+            glEnd();
+        }
         std::vector<YaviePoint::Ptr> all_pts = map_->GetAllPoints();
         glPointSize(1);
         glBegin(GL_POINTS);
         GL_COLOR_PURPLE;
         for (size_t idx = 0; idx < all_pts.size(); ++idx) {
-            if (all_pts[idx]->GetObsNum() > 4) {
-                Eigen::Vector3d tp = all_pts[idx]->GetPosition();
-                glVertex3f(tp[0], tp[1], tp[2]);
-            }
+            Eigen::Vector3d tp = all_pts[idx]->GetPosition();
+            glVertex3f(tp[0], tp[1], tp[2]);
         }
         glEnd();
     }

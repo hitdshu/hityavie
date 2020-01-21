@@ -193,7 +193,6 @@ void YavieEstimator::LinearAlignment() {
     rfx = RefineGravity(rfx);
     rfx = RefineGravity(rfx);
     VisualInertialInit(rfx);
-    GlobalOptimization();
     YavieFrame::Ptr lf = map_->GetLastFrame();
     last_twb_ = lf->GetPose();
     last_ba_ = lf->GetPreintegrator()->GetBa();
@@ -513,6 +512,9 @@ void YavieEstimator::LocalOptimization() {
         problem.AddResidualBlock(imu_cost_func, nullptr, &ppf[0], &vpf[0], &pcf[0], &vcf[0]);
         problem.SetParameterization(&ppf[0], pose_ptr);
         problem.SetParameterization(&pcf[0], pose_ptr);
+        if (idx == 0) {
+            problem.SetParameterBlockConstant(&vpf[0]);
+        }
     }
     for (const auto &frm : outer_frms) {
         std::vector<Feature> feats = frm->GetFeatures();
@@ -541,7 +543,7 @@ void YavieEstimator::LocalOptimization() {
         problem.SetParameterBlockConstant(&pv[0]);
     }
     ceres::Solver::Options options;
-    options.max_num_iterations = 20;
+    options.max_num_iterations = 40;
     options.linear_solver_type = ceres::SPARSE_NORMAL_CHOLESKY;
     ceres::Solver::Summary summary;
     ceres::Solve(options, &problem, &summary);

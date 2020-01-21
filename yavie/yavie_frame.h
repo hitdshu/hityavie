@@ -35,6 +35,9 @@ public:
     Eigen::Vector3d GetV() const {
         return v_;
     }
+    double GetTimestamp() const {
+        return timestamp_;
+    }
 
     YavieFrame(const YavieFrame &) = delete;
     YavieFrame &operator=(const YavieFrame &) = delete;

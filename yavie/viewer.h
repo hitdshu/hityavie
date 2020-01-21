@@ -5,6 +5,7 @@
 #include <pangolin/pangolin.h>
 #include "yavie/yavie_map.h"
 #include "camera/camera_base.h"
+#include "common/gt_reader.h"
 
 namespace hityavie {
 
@@ -15,7 +16,7 @@ public:
     Viewer() = default;
     ~Viewer() = default;
 
-    void InitViewer(const YavieMap::Ptr &map, const BaseCamera::Ptr cam);
+    void InitViewer(const YavieMap::Ptr &map, const BaseCamera::Ptr cam, const GtReader::Ptr &gtm);
     void Close();
 
 protected:
@@ -29,6 +30,10 @@ private:
 
     YavieMap::Ptr map_;
     BaseCamera::Ptr cam_;
+    GtReader::Ptr gtm_;
+    bool has_transform_;
+    Eigen::Matrix4d twg_;
+    Eigen::Matrix4d tgc_;
 };
 
 } // namespace hityavie
