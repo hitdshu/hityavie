@@ -10,14 +10,8 @@ See folder sfm. This folder contains a monocular visual odometry module which ca
 See folder yavie. We don't use sliding window(schur complement) to limit the computation. Instead the double window optimization(see ORB-SLAM for details) is used here. There maybe many bugs in this code. The way we utilize imu information is borrowed shamelessly from VINS-MONO. Currently loop closing is not contained in the repo.
 
 ## Some demo images
-Initialization success.
+Initialization success. See pictures/init.png.
 
-<img src="./pictures/init.png" width = "600" height = "400" div align=center>
-
-Tracking.
-
-<img src="./pictures/tracking.png" width = "600" height = "400" div align=center>
-
-<img src="./pictures/tracking2.png" width = "600" height = "400" div align=center>
+Tracking. See pictures/tracking.png, pictures/tracking2.png.
 
 Blue boxes are trajectories of cameras. Purple points are map points while the green are currently observed points.

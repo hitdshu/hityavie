@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     const std::string img_root_dir(data_folder);
     const std::string img_file(data_folder + "/images.txt");
     const int start_idx = 928;
-    const int end_idx = 1200;
+    const int end_idx = 1820;
     ImuReader imu_reader;
     imu_reader.Init(imu_file);
     const double img_timeoff = -0.0166845720919;
