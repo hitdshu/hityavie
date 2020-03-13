@@ -1,7 +1,7 @@
 # hityavie
 Yet another visual inertial estimator(YAVIE). 
 
-This is a hands on project for fun. I don't want to write any detail about this repo since no one would actually check it carefully. Though I learned a lot and got a lot of fun while creating it.
+This is a hands on project for fun. I learned a lot and got a lot of fun while creating it. Hope you'll enjoy it as I do.
 
 ## Structrue from motion
 See folder sfm. This folder contains a monocular visual odometry module which can run with only image infomation.
